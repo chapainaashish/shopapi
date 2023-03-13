@@ -1,14 +1,6 @@
 from django.db import models
 
 
-class Customer(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=255)
-    date_joined = models.DateField(auto_now_add=True)
-
-
 class Membership(models.Model):
     MEMBERSHIP_BRONZE = "B"
     MEMBERSHIP_SILVER = "S"
@@ -23,3 +15,22 @@ class Membership(models.Model):
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE
     )
+    discount = models.DecimalField(max_digits=2, decimal_places=2)
+
+
+class Customer(models.Model):
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=255)
+    phone = models.CharField(max_length=255)
+    joined_date = models.DateField(auto_now_add=True)
+    membership = models.ForeignKey(Membership, on_delete=models.PROTECT)
+
+
+class Address(models.Model):
+    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    house_no = models.CharField(max_length=255)
+    street = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    country = models.CharField(max_length=255)

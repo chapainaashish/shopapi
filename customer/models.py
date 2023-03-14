@@ -19,6 +19,7 @@ class Membership(models.Model):
 
 
 class Customer(models.Model):
+    image = models.ImageField(upload_to="customer/images", default="")
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)

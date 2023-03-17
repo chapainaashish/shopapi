@@ -4,5 +4,3 @@ __pycache__/
 *$py.class
 *.log
 local_settings.py
-db.sqlite3-journal
-.gitignore

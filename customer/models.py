@@ -15,11 +15,13 @@ class Membership(models.Model):
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE
     )
-    discount = models.DecimalField(max_digits=2, decimal_places=2)
+    discount = models.DecimalField(max_digits=3, decimal_places=2)
 
 
 class Customer(models.Model):
-    image = models.ImageField(upload_to="customer/images", default="")
+    image = models.ImageField(
+        upload_to="customer/images", default="customer/images/default.jpg"
+    )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)

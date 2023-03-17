@@ -15,7 +15,7 @@ class Membership(models.Model):
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE
     )
-    discount = models.DecimalField(max_digits=3, decimal_places=2)
+    discount = models.DecimalField(max_digits=4, decimal_places=2)
 
 
 class Customer(models.Model):
@@ -35,5 +35,4 @@ class Address(models.Model):
     house_no = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
+    state = models.CharField(max_length=2)

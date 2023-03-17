@@ -13,7 +13,7 @@ class Product(models.Model):
     image = models.ImageField(
         upload_to="product/images", default="product/images/default.jpg"
     )
-    slug = models.SlugField()
+    # slug = models.SlugField()
     description = models.TextField()
     price = models.DecimalField(max_digits=8, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)

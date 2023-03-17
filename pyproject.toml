@@ -10,6 +10,8 @@ python = "^3.10"
 django = "^4.1.7"
 pillow = "^9.4.0"
 djangorestframework = "^3.14.0"
+python-dotenv = "^1.0.0"
+mysqlclient = "^2.1.1"
 
 
 [tool.poetry.group.dev.dependencies]

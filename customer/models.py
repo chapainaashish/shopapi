@@ -1,4 +1,6 @@
 from django.db import models
+from django_countries.fields import CountryField
+from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Membership(models.Model):
@@ -17,22 +19,28 @@ class Membership(models.Model):
     )
     discount = models.DecimalField(max_digits=4, decimal_places=2)
 
+    def __str__(self) -> str:
+        return self.membership
+
 
 class Customer(models.Model):
     image = models.ImageField(
         upload_to="customer/images", default="customer/images/default.jpg"
     )
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    email = models.EmailField(max_length=255)
-    phone = models.CharField(max_length=255)
-    joined_date = models.DateField(auto_now_add=True)
+    phone = PhoneNumberField()
     membership = models.ForeignKey(Membership, on_delete=models.PROTECT)
 
+    def __str__(self) -> str:
+        return self.first_name + self.last_name
 
-class Address(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+
+class CustomerAddress(models.Model):
+    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
     house_no = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    state = models.CharField(max_length=2)
+    postal_code = models.CharField(max_length=20)
+    country = CountryField()
+
+    def __str__(self) -> str:
+        return self.customer

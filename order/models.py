@@ -5,22 +5,30 @@ from product.models import Product
 
 
 class Order(models.Model):
-    STATUS_PENDING = "P"
-    STATUS_COMPLETE = "C"
-    STATUS_CHOICES = [
-        (STATUS_PENDING, "Pending"),
-        (STATUS_COMPLETE, "Complete"),
+    PAYMENT_PENDING = "P"
+    PAYMENT_COMPLETE = "C"
+    PAYMENT_FAILED = "F"
+
+    PAYMENT_CHOICES = [
+        (PAYMENT_PENDING, "Pending"),
+        (PAYMENT_COMPLETE, "Complete"),
+        (PAYMENT_FAILED, "Failed"),
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     placed_at = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(
-        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDING
+    payment = models.CharField(
+        max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING
     )
+
+    def __str__(self):
+        return self.customer + self.placed_at
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
-    unit_price = models.DecimalField(max_digits=8, decimal_places=2)
+
+    def __str__(self):
+        return self.order

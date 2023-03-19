@@ -14,6 +14,7 @@ python-dotenv = "^1.0.0"
 mysqlclient = "^2.1.1"
 django-phonenumber-field = "^7.0.2"
 django-countries = "^7.5.1"
+phonenumbers = "^8.13.7"
 
 
 [tool.poetry.group.dev.dependencies]

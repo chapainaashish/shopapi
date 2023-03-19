@@ -1,8 +1,9 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 
-
+"""
 class Membership(models.Model):
     MEMBERSHIP_BRONZE = "B"
     MEMBERSHIP_SILVER = "S"
@@ -21,21 +22,28 @@ class Membership(models.Model):
 
     def __str__(self) -> str:
         return self.membership
+    membership = models.ForeignKey(Membership, on_delete=models.PROTECT)
+
+"""
 
 
-class Customer(models.Model):
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(
         upload_to="customer/images", default="customer/images/default.jpg"
     )
     phone = PhoneNumberField()
-    membership = models.ForeignKey(Membership, on_delete=models.PROTECT)
 
     def __str__(self) -> str:
         return self.first_name + self.last_name
 
 
-class CustomerAddress(models.Model):
-    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+class Address(models.Model):
+    BILLING = "B"
+    SHIPPING = "S"
+    ADDRESS_CHOICES = [(BILLING, "Billing"), (SHIPPING, "Shipping")]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     house_no = models.CharField(max_length=255)
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)

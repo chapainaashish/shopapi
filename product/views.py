@@ -18,11 +18,21 @@ def product_list(request):
         serializer = ProductSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+        return Response("ok")
 
 
-@api_view()
+@api_view(["GET", "PUT", "DELETE"])
 def product_details(request, id):
     product = get_object_or_404(Product, pk=id)
-    serializer = ProductSerializer(product)
-    return Response(serializer.data)
+    if request.method == "GET":
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+    elif request.method == "PUT":
+        serializer = ProductSerializer(product, request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    elif request.method == "DELETE":
+        product.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

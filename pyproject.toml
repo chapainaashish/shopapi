@@ -15,6 +15,7 @@ mysqlclient = "^2.1.1"
 django-phonenumber-field = "^7.0.2"
 django-countries = "^7.5.1"
 phonenumbers = "^8.13.7"
+drf-nested-routers = "^0.93.4"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -10,6 +10,16 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     user = serializers.ReadOnlyField(source="user.username")
 
+    def create(self, validated_data):
+        product_id = self.context["product_id"]
+        user = self.context["user"]
+
+        return Review.objects.create(
+            product_id=product_id,
+            user=user,
+            **validated_data,
+        )
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,14 +32,16 @@ class ProductSerializer(serializers.ModelSerializer):
             "quantity",
             "price",
             "category",
-            "review",
+            "reviews",
         ]
 
     category = serializers.StringRelatedField()
-    review = ReviewSerializer(many=True, read_only=True)
+    reviews = ReviewSerializer(many=True, read_only=True)
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ["id", "name", "description"]
+
+    # product = ProductSerializer(many=True, read_only=True)

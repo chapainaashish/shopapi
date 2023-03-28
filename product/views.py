@@ -26,6 +26,7 @@ class ReviewViewset(ModelViewSet):
     serializer_class = ReviewSerializer
 
     def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context["product_id"] = self.kwargs.get("pk")
-        return context
+        return {
+            "product_id": self.kwargs["product_pk"],
+            "user": self.request.user,
+        }

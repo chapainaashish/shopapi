@@ -33,9 +33,10 @@ class Product(models.Model):
 class Review(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="review"
+        Product, on_delete=models.CASCADE, related_name="reviews"
     )
     review = models.TextField()
+    date = models.DateField(auto_now_add=True)
     rating = models.IntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)]
     )

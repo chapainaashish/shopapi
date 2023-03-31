@@ -35,7 +35,7 @@ class Order(models.Model):
     )
 
     def __str__(self):
-        return self.customer + self.placed_at
+        return str(self.user) + str(self.placed_at)
 
 
 class OrderItem(models.Model):

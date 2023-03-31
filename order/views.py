@@ -9,6 +9,9 @@ class OrderItemViewset(ModelViewSet):
     queryset = OrderItem.objects.all()
 
 
-class OrderSerializer(ModelViewSet):
+class OrderViewset(ModelViewSet):
     serializer_class = OrderSerializer
     queryset = Order.objects.all()
+
+    def get_serializer_context(self):
+        return {"user": self.request.user}

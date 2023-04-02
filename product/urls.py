@@ -4,14 +4,14 @@ from . import views
 
 router = DefaultRouter()
 router.register(prefix="category", viewset=views.CategoryViewset)
-router.register(prefix="products", viewset=views.ProductViewset, basename="product")
+router.register(prefix="product", viewset=views.ProductViewset, basename="product")
 
 
 products_router = NestedDefaultRouter(
-    parent_router=router, parent_prefix="products", lookup="product"
+    parent_router=router, parent_prefix="product", lookup="product"
 )
 
-products_router.register("reviews", views.ReviewViewset, basename="product-reviews")
+products_router.register("reviews", views.ReviewViewset, basename="product-review")
 
 
 urlpatterns = router.urls + products_router.urls

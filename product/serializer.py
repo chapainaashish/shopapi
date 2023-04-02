@@ -6,16 +6,16 @@ from .models import Category, Product, Review
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ["id", "user", "rating", "review"]
+        fields = ["id", "user", "description", "rating", "date"]
 
     user = serializers.ReadOnlyField(source="user.username")
 
     def create(self, validated_data):
-        product_id = self.context["product_id"]
+        product_pk = self.context["product_pk"]
         user = self.context["user"]
 
         return Review.objects.create(
-            product_id=product_id,
+            product_id=product_pk,
             user=user,
             **validated_data,
         )
@@ -35,7 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
             "reviews",
         ]
 
-    category = serializers.StringRelatedField()
+    # category = serializers.StringRelatedField()
     reviews = ReviewSerializer(many=True, read_only=True)
 
 

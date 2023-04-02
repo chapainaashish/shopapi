@@ -5,16 +5,6 @@ from product.models import Product
 
 
 class Order(models.Model):
-    PAYMENT_PENDING = "P"
-    PAYMENT_COMPLETE = "C"
-    PAYMENT_FAILED = "F"
-
-    PAYMENT_CHOICES = [
-        (PAYMENT_PENDING, "Pending"),
-        (PAYMENT_COMPLETE, "Complete"),
-        (PAYMENT_FAILED, "Failed"),
-    ]
-
     DELIVERY_PENDING = "P"
     DELIVERY_COMPLETE = "C"
     DELIVERY_FAILED = "F"
@@ -27,9 +17,6 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     placed_at = models.DateTimeField(auto_now_add=True)
-    payment = models.CharField(
-        max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING
-    )
     delivery = models.CharField(
         max_length=1, choices=DELIVERY_CHOICES, default=DELIVERY_PENDING
     )
@@ -39,10 +26,29 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    current_price = models.DecimalField(max_digits=8, decimal_places=2)
+    ordered_price = models.DecimalField(max_digits=8, decimal_places=2)
     quantity = models.PositiveSmallIntegerField()
 
     def __str__(self):
         return self.order
+
+
+class Payment(models.Model):
+    PAYMENT_PENDING = "P"
+    PAYMENT_COMPLETE = "C"
+    PAYMENT_FAILED = "F"
+
+    PAYMENT_CHOICES = [
+        (PAYMENT_PENDING, "Pending"),
+        (PAYMENT_COMPLETE, "Complete"),
+        (PAYMENT_FAILED, "Failed"),
+    ]
+    order = models.OneToOneField(
+        Order, on_delete=models.PROTECT, related_name="payment"
+    )
+    status = models.CharField(
+        max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING
+    )
+    updated_at = models.DateTimeField(auto_now=True)

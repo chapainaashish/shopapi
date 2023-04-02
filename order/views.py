@@ -8,6 +8,9 @@ class OrderItemViewset(ModelViewSet):
     serializer_class = OrderItemSerializer
     queryset = OrderItem.objects.all()
 
+    def get_serializer_context(self):
+        return {"order_pk": self.kwargs["order_pk"]}
+
 
 class OrderViewset(ModelViewSet):
     serializer_class = OrderSerializer

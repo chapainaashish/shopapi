@@ -1,3 +1,4 @@
+# for review
 from django.contrib.auth.models import User
 from django.db import models
 from django_countries.fields import CountryField
@@ -42,6 +43,7 @@ class Address(models.Model):
     BILLING = "B"
     SHIPPING = "S"
     ADDRESS_CHOICES = [(BILLING, "Billing"), (SHIPPING, "Shipping")]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     house_no = models.CharField(max_length=255)
@@ -49,6 +51,7 @@ class Address(models.Model):
     city = models.CharField(max_length=255)
     postal_code = models.CharField(max_length=20)
     country = CountryField()
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self) -> str:
         return self.customer

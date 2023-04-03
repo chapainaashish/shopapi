@@ -17,7 +17,8 @@ class Order(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    placed_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     delivery = models.CharField(
         max_length=1, choices=DELIVERY_CHOICES, default=DELIVERY_PENDING
     )

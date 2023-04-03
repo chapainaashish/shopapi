@@ -1,6 +1,3 @@
-import random
-import string
-
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -72,15 +69,6 @@ class Product(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    def save(self, *args, **kwargs) -> None:
-        """Override the default save method to generate a unique UPC code"""
-        self.upc = self.generate_upc()
-        super(Product, self).save(*args, **kwargs)
-
-    def generate_upc(self) -> str:
-        """Generate a random 12-character string of uppercase letters and digits"""
-        return "".join(random.choices(string.ascii_uppercase + string.digits, k=12))
 
     def __str__(self) -> str:
         return self.name

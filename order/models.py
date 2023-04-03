@@ -36,7 +36,7 @@ class Order(models.Model):
         max_length=1, choices=DELIVERY_CHOICES, default=DELIVERY_PENDING
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.user) + str(self.placed_at)
 
 
@@ -64,14 +64,6 @@ class OrderItem(models.Model):
     def __str__(self) -> str:
         return self.order
 
-    def save(self, *args, **kwargs) -> None:
-        """
-        Overrides the default save method to set ordered_price to product_price when the product is being ordered
-        """
-        if not self.id:
-            self.ordered_price = self.product.price
-        super().save(*args, **kwargs)
-
 
 class Payment(models.Model):
     """
@@ -89,7 +81,7 @@ class Payment(models.Model):
     PAYMENT_PENDING = "P"
     PAYMENT_COMPLETE = "C"
     PAYMENT_FAILED = "F"
-    
+
     PAYMENT_CHOICES = [
         (PAYMENT_PENDING, "Pending"),
         (PAYMENT_COMPLETE, "Complete"),

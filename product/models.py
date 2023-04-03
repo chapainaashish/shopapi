@@ -60,7 +60,10 @@ class Product(models.Model):
     price = models.DecimalField(
         max_digits=8, decimal_places=2, help_text="Enter the product price"
     )
-    quantity = models.IntegerField(default=1, help_text="Enter the product quantity")
+    quantity = models.PositiveIntegerField(
+        help_text="Enter the product quantity",
+        validators=[MinValueValidator(1)],
+    )
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -70,7 +73,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         """Override the default save method to generate a unique UPC code"""
         self.upc = self.generate_upc()
         super(Product, self).save(*args, **kwargs)
@@ -93,7 +96,7 @@ class Review(models.Model):
         description (str): description of the review
         created_at (datetime): date and time when the review was created
         updated_at (datetime): date and time when the review was last updated
-        rating (int): Rating given by the user to the product, between 1 and 5 (inclusive)
+        rating (int): rating given by the user to the product, between 1 and 5
     """
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -103,7 +106,7 @@ class Review(models.Model):
     description = models.TextField(help_text="Enter the description of the review")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-    rating = models.IntegerField(
+    rating = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(5)],
         help_text="Enter the rating of the product between 1 and 5",
     )

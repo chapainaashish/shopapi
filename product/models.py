@@ -43,8 +43,8 @@ class Product(models.Model):
         price (Decimal): price of the product
         quantity (int): quantity of the product in stock
         category (Category):  category to which the product belongs
-        created_at (datetime): date and time when the product was created
-        updated_at (datetime): date and time when the product was last updated
+        created_at (date): date when the product was created
+        updated_at (date): date when the product was last updated
     """
 
     upc = models.CharField(max_length=12, unique=True, blank=True)
@@ -70,8 +70,8 @@ class Product(models.Model):
         related_name="products",
         help_text="Select the product category",
     )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
 
     def save(self, *args, **kwargs) -> None:
         """Override the default save method to generate a unique UPC code"""

@@ -6,7 +6,7 @@ from .models import Category, Product, Review
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
-        fields = ["id", "user", "description", "rating", "date"]
+        fields = ["id", "user", "description", "rating", "created_at", "updated_at"]
 
     user = serializers.ReadOnlyField(source="user.username")
 
@@ -26,17 +26,21 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id",
+            "upc",
             "name",
             "image",
             "description",
             "quantity",
             "price",
             "category",
+            "created_at",
+            "updated_at",
             "reviews",
         ]
 
     # category = serializers.StringRelatedField()
     reviews = ReviewSerializer(many=True, read_only=True)
+    upc = serializers.ReadOnlyField()
 
 
 class CategorySerializer(serializers.ModelSerializer):

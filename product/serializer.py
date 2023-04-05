@@ -11,6 +11,8 @@ class ReviewSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
 
     def create(self, validated_data):
+        """Overriding to associate review with product"""
+        # product_pk is returned from ReviewViewSet
         product_pk = self.context["product_pk"]
         user = self.context["user"]
 

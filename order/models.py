@@ -91,10 +91,13 @@ class Payment(models.Model):
         (PAYMENT_FAILED, "Failed"),
     ]
     order = models.OneToOneField(
-        Order, on_delete=models.PROTECT, related_name="payment"
+        Order, on_delete=models.PROTECT, related_name="payment", primary_key=True
     )
     updated_at = models.DateTimeField(auto_now=True)
 
     status = models.CharField(
         max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING
     )
+
+    def __str__(self) -> str:
+        return self.status

@@ -25,6 +25,8 @@ class PaymentSerializer(serializers.ModelSerializer):
         model = Payment
         fields = ["order", "status", "updated_at"]
 
+    order = serializers.ReadOnlyField(source="order.id")
+
 
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,7 +42,7 @@ class OrderSerializer(serializers.ModelSerializer):
         ]
 
     user = serializers.StringRelatedField(read_only=True)
-    payment = PaymentSerializer(read_only=True)
+    payment = serializers.StringRelatedField(read_only=True)
     items = OrderItemSerializer(read_only=True, many=True)
 
     def create(self, validated_data):

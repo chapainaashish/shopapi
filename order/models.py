@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from customer.models import Address
 from product.models import Product
 
 
@@ -30,6 +31,12 @@ class Order(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
+    billing_address = models.ForeignKey(
+        Address, on_delete=models.PROTECT, related_name="billing_order"
+    )
+    shipping_address = models.ForeignKey(
+        Address, on_delete=models.PROTECT, related_name="shipping_order"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     delivery = models.CharField(

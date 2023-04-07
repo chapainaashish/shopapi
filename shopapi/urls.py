@@ -4,10 +4,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path("/", include("customer.urls")),
+    path("store/", include("product.urls")),
+    path("store/", include("order.urls")),
     path("admin/", admin.site.urls),
-    path("customer/", include("customer.urls")),
-    path("order/", include("order.urls")),
-    path("product/", include("product.urls")),
 ]
 
 

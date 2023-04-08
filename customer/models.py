@@ -46,7 +46,7 @@ class Profile(models.Model):
     phone = PhoneNumberField(help_text="Enter your phone number")
 
     def __str__(self) -> str:
-        return self.first_name + self.last_name
+        return self.user.username
 
 
 class Address(models.Model):
@@ -55,9 +55,6 @@ class Address(models.Model):
 
     Attributes:
         user (User): associated user
-        address_type (char): address type, it can be
-            - "B" Billing
-            - "S" Shipping
         house_no (str):  user's house or apartment number
         street (str): user's street
         city (str): user's city or town
@@ -66,14 +63,7 @@ class Address(models.Model):
         updated_at (datetime): date and time the address was updated
     """
 
-    BILLING = "B"
-    SHIPPING = "S"
-    ADDRESS_CHOICES = [(BILLING, "Billing"), (SHIPPING, "Shipping")]
-
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address_type = models.CharField(
-        max_length=1, choices=ADDRESS_CHOICES, help_text="Select address type"
-    )
     house_no = models.CharField(max_length=255, help_text="Enter the house no")
     street = models.CharField(max_length=255, help_text="Enter the street")
     city = models.CharField(max_length=255, help_text="Enter the city")
@@ -82,4 +72,4 @@ class Address(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.customer
+        return self.user.username + self.house_no

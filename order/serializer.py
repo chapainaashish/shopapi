@@ -38,6 +38,8 @@ class OrderSerializer(serializers.ModelSerializer):
             "updated_at",
             "delivery",
             "payment",
+            "billing_address",
+            "shipping_address",
             "items",
         ]
 

@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from customer.models import Address
+
 from .models import Order, OrderItem, Payment
 
 
@@ -28,6 +30,12 @@ class PaymentSerializer(serializers.ModelSerializer):
     order = serializers.ReadOnlyField(source="order.id")
 
 
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = "__all__"
+
+
 class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
@@ -46,6 +54,14 @@ class OrderSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
     payment = serializers.StringRelatedField(read_only=True)
     items = OrderItemSerializer(read_only=True, many=True)
+    delivery = serializers.ReadOnlyField()
+
+    def get_fields(self):
+        fields = super().get_fields()
+        user = self.context["user"]
+        fields["billing_address"].queryset = Address.objects.filter(user=user)
+        fields["shipping_address"].queryset = Address.objects.filter(user=user)
+        return fields
 
     def create(self, validated_data):
         user = self.context["user"]

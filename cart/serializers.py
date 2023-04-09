@@ -13,15 +13,17 @@ class CartItemSerializer(serializers.ModelSerializer):
     # product = serializers.StringRelatedField()
 
     def get_unit_price(self, item):
+        """Return current item price"""
         return item.product.price
 
     def get_total_price(self, item):
+        """Return item total price"""
         return item.product.price * item.quantity
 
     def create(self, validated_data):
-        """Overriding create method
+        """
         - Create a cart item associated with its cart
-        - Update only item quantity if it's already exist in db
+        - Update only item quantity if it's already in cart
         """
         cart_pk = self.context["cart_pk"]
         product = validated_data["product"]
@@ -47,8 +49,11 @@ class CartSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField(method_name="get_total_price")
 
     def get_total_price(self, cart):
+        """Return total cart items price"""
         return sum([item.quantity * item.product.price for item in cart.items.all()])
 
     def create(self, validated_data):
+        """Create new cart associated with current user"""
+        # user>returned from viewset
         user = self.context["user"]
         return Cart.objects.create(user=user, **validated_data)

@@ -72,4 +72,4 @@ class Address(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.user.username + self.house_no
+        return self.user.username

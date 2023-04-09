@@ -18,10 +18,15 @@ class OrderItemViewset(ModelViewSet):
 
 class OrderViewset(ModelViewSet):
     serializer_class = OrderSerializer
-    queryset = Order.objects.prefetch_related("items").all()
 
     def get_serializer_context(self):
         return {"user": self.request.user}
+
+    def get_queryset(self):
+        order = (
+            Order.objects.prefetch_related("items").filter(user=self.request.user).all()
+        )
+        return order
 
 
 class PaymentView(RetrieveUpdateAPIView):

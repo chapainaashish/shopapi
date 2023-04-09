@@ -25,7 +25,7 @@ class Category(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -83,7 +83,7 @@ class Product(models.Model):
         return "".join(random.choices(string.ascii_uppercase + string.digits, k=12))
 
     def __str__(self) -> str:
-        return self.name
+        return str(self.name)
 
 
 class Review(models.Model):
@@ -112,7 +112,7 @@ class Review(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.description
+        return str(self.description)
 
     class Meta:
         unique_together = ("user", "product")

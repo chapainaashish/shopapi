@@ -2,7 +2,12 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Order, OrderItem, Payment
-from .serializer import OrderItemSerializer, OrderSerializer, PaymentSerializer
+from .serializer import (
+    OrderItemSerializer,
+    PaymentSerializer,
+    ReadOrderSerializer,
+    WriteOrderSerializer,
+)
 
 
 class OrderItemViewset(ModelViewSet):
@@ -17,16 +22,22 @@ class OrderItemViewset(ModelViewSet):
 
 
 class OrderViewset(ModelViewSet):
-    serializer_class = OrderSerializer
-
     def get_serializer_context(self):
         return {"user": self.request.user}
 
     def get_queryset(self):
+        """Return only current user associated orders"""
         order = (
             Order.objects.prefetch_related("items").filter(user=self.request.user).all()
         )
         return order
+
+    def get_serializer_class(self):
+        """Return serializer class based on request"""
+        if self.request.method == "POST":
+            return WriteOrderSerializer
+        else:
+            return ReadOrderSerializer
 
 
 class PaymentView(RetrieveUpdateAPIView):

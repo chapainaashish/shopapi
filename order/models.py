@@ -72,7 +72,7 @@ class OrderItem(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.order
+        return str(self.order)
 
 
 class Payment(models.Model):
@@ -98,7 +98,7 @@ class Payment(models.Model):
         (PAYMENT_FAILED, "Failed"),
     ]
     order = models.OneToOneField(
-        Order, on_delete=models.PROTECT, related_name="payment", primary_key=True
+        Order, on_delete=models.CASCADE, related_name="payment", primary_key=True
     )
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -107,4 +107,4 @@ class Payment(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.status
+        return str(self.status)

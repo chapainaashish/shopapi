@@ -21,17 +21,16 @@ class CartItemSerializer(serializers.ModelSerializer):
         return item.product.price * item.quantity
 
     def create(self, validated_data):
-        """
-        - Create a cart item associated with its cart
-        - Update only item quantity if it's already in cart
-        """
+        """Add product item to the cart"""
         cart_pk = self.context["cart_pk"]
         product = validated_data["product"]
 
+        # item already in the cart ?
         cart_item, created = CartItem.objects.get_or_create(
             product__id=product.id, cart_id=cart_pk, defaults=validated_data
         )
 
+        # increasing the item quantity only if the item is already in the cart
         if not created:
             cart_item.quantity += validated_data["quantity"]
             cart_item.save()
@@ -53,7 +52,6 @@ class CartSerializer(serializers.ModelSerializer):
         return sum([item.quantity * item.product.price for item in cart.items.all()])
 
     def create(self, validated_data):
-        """Create new cart associated with current user"""
-        # user>returned from viewset
+        """Create new cart for logged in user"""
         user = self.context["user"]
         return Cart.objects.create(user=user, **validated_data)

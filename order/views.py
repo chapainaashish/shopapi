@@ -7,7 +7,6 @@ from .serializer import OrderItemSerializer, OrderSerializer, PaymentSerializer
 
 class OrderItemViewset(ModelViewSet):
     serializer_class = OrderItemSerializer
-    queryset = OrderItem.objects.all()
 
     def get_serializer_context(self):
         return {"order_pk": self.kwargs["order_pk"]}
@@ -19,7 +18,7 @@ class OrderItemViewset(ModelViewSet):
 
 class OrderViewset(ModelViewSet):
     serializer_class = OrderSerializer
-    queryset = Order.objects.all()
+    queryset = Order.objects.prefetch_related("items").all()
 
     def get_serializer_context(self):
         return {"user": self.request.user}

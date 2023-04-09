@@ -15,7 +15,7 @@ class Cart(models.Model):
         updated_at (DateTimeField): The date and time when the cart was last updated
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -25,7 +25,7 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     """
-    A model represent items in cart
+    A model to represent item in cart
 
     Attributes:
     cart (Cart): associated cart with item
@@ -49,4 +49,4 @@ class CartItem(models.Model):
         unique_together = ("cart", "product")
 
     def __str__(self) -> str:
-        return self.cart + self.product
+        return str(self.cart) + str(self.product)

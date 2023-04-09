@@ -10,9 +10,11 @@ class ProductViewset(ModelViewSet):
     def get_queryset(self):
         """Overriding for filtering product with category"""
         category = self.request.query_params.get("category")
-        queryset = Product.objects.all()
+        queryset = Product.objects.prefetch_related("reviews").all()
         if category is not None:
-            queryset = Product.objects.filter(category__id=category)
+            queryset = Product.objects.prefetch_related("reviews").filter(
+                category__id=category
+            )
         return queryset
 
 

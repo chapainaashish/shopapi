@@ -1,12 +1,15 @@
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Category, Product, Review
-from .serializer import CategorySerializer, ProductSerializer, ReviewSerializer
+from .serializer import (
+    CategorySerializer,
+    ReadProductSerializer,
+    ReviewSerializer,
+    WriteProductSerializer,
+)
 
 
 class ProductViewset(ModelViewSet):
-    serializer_class = ProductSerializer
-
     def get_queryset(self):
         """Overriding for filtering product with category"""
         category = self.request.query_params.get("category")
@@ -16,6 +19,11 @@ class ProductViewset(ModelViewSet):
                 category__id=category
             )
         return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ReadProductSerializer
+        return WriteProductSerializer
 
 
 class CategoryViewset(ModelViewSet):

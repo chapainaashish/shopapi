@@ -1,9 +1,9 @@
-import random
-import string
-
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Avg
+
+from .utility import generate_upc
 
 
 class Category(models.Model):
@@ -26,6 +26,9 @@ class Category(models.Model):
 
     def __str__(self) -> str:
         return str(self.name)
+
+    def total_products(self):
+        return self.products.count()
 
     class Meta:
         verbose_name_plural = "Categories"
@@ -75,12 +78,11 @@ class Product(models.Model):
 
     def save(self, *args, **kwargs) -> None:
         """Override the default save method to generate a unique UPC code"""
-        self.upc = self.generate_upc()
+        self.upc = generate_upc()
         super(Product, self).save(*args, **kwargs)
 
-    def generate_upc(self) -> str:
-        """Generate a random 12-character string of uppercase letters and digits"""
-        return "".join(random.choices(string.ascii_uppercase + string.digits, k=12))
+    def average_rating(self):
+        return self.reviews.aggregate(rating=Avg("rating")).get("rating")
 
     def __str__(self) -> str:
         return str(self.name)

@@ -1,7 +1,13 @@
-from rest_framework.exceptions import PermissionDenied
+from django.db.models import Avg, Count
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
+from .filters import ProductFilter
 from .models import Category, Product, Review
+from .pagination import DefaultPagination
+from .permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
 from .serializer import (
     CategorySerializer,
     ReadProductSerializer,
@@ -12,15 +18,13 @@ from .serializer import (
 
 
 class ProductViewset(ModelViewSet):
-    def get_queryset(self):
-        """Overriding for filtering product with category"""
-        category = self.request.query_params.get("category")
-        queryset = Product.objects.prefetch_related("reviews").all()
-        if category is not None:
-            queryset = Product.objects.prefetch_related("reviews").filter(
-                category__id=category
-            )
-        return queryset
+    queryset = Product.objects.annotate(average_rating=Avg("reviews__rating"))
+    permission_classes = [IsAdminOrReadOnly]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = ProductFilter
+    search_fields = ["name", "description"]
+    ordering_fields = ["price", "average_rating"]
+    pagination_class = DefaultPagination
 
     def get_serializer_class(self):
         """Overriding to return serializer class based on HTTP request method"""
@@ -30,12 +34,20 @@ class ProductViewset(ModelViewSet):
 
 
 class CategoryViewset(ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.annotate(total_products=Count("products"))
+    permission_classes = [IsAdminOrReadOnly]
     serializer_class = CategorySerializer
+    pagination_class = DefaultPagination
+    filter_backends = [OrderingFilter]
+    ordering_fields = ["total_products"]
 
 
 class ReviewViewset(ModelViewSet):
+    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     http_method_names = ["get", "post", "patch", "delete"]
+    filter_backends = [OrderingFilter]
+    pagination_class = DefaultPagination
+    ordering_fields = ["rating", "created_at"]
 
     def get_queryset(self):
         """Overriding for getting product specific reviews"""
@@ -55,20 +67,3 @@ class ReviewViewset(ModelViewSet):
         if self.request.method == "GET":
             return ReadReviewSerializer
         return WriteReviewSerializer
-
-    def perform_update(self, serializer):
-        """Overriding to enforce user can only change his/her review"""
-        review = self.get_object()
-        if review.user != self.request.user:
-            raise PermissionDenied(
-                detail="You are not authorized to update this review"
-            )
-        serializer.save()
-
-    def perform_destroy(self, instance):
-        """Overriding to enforce user can only delete his/her review"""
-        if instance.user != self.request.user:
-            raise PermissionDenied(
-                detail="You are not authorized to delete this review"
-            )
-        instance.delete()

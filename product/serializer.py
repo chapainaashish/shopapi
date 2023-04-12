@@ -1,28 +1,40 @@
-from rest_framework import serializers, status
+from rest_framework import serializers
 
 from .models import Category, Product, Review
 
 
-class ReviewSerializer(serializers.ModelSerializer):
+class ReadReviewSerializer(serializers.ModelSerializer):
+    """Serializer class of Review model for reading [GET]"""
+
     class Meta:
         model = Review
         fields = ["id", "user", "description", "rating", "created_at", "updated_at"]
 
     user = serializers.ReadOnlyField(source="user.username")
 
+
+class WriteReviewSerializer(serializers.ModelSerializer):
+    """Serializer class of Review model for writing [POST, PATCH]"""
+
+    class Meta:
+        model = Review
+        fields = ["description", "rating"]
+
     def validate(self, attrs):
-        """Check if user has already reviewed the product"""
+        """Overriding to check if user has already reviewed the product or not"""
         product_pk = self.context["product_pk"]
         user = self.context["user"]
+        review_exists = Review.objects.filter(user=user, product_id=product_pk).exists()
 
-        if Review.objects.filter(user=user, product_id=product_pk).exists():
+        if self.context["request"].method == "POST" and review_exists:
             raise serializers.ValidationError(
                 {"error": "You have already reviewed this product"}
             )
+
         return attrs
 
     def create(self, validated_data):
-        """Overriding to associate review with product"""
+        """Overriding to associate review with related product"""
         product_pk = self.context["product_pk"]
         user = self.context["user"]
 
@@ -34,13 +46,14 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class ReadProductSerializer(serializers.ModelSerializer):
+    """Serializer class of Product model for reading [GET]"""
+
     class Meta:
         model = Product
         fields = [
             "id",
             "upc",
             "name",
-            "image",
             "description",
             "quantity",
             "price",
@@ -51,17 +64,18 @@ class ReadProductSerializer(serializers.ModelSerializer):
             "reviews",
         ]
 
-    reviews = ReviewSerializer(many=True, read_only=True)
-    upc = serializers.ReadOnlyField()
+    # for nested relationship
+    reviews = ReadReviewSerializer(many=True, read_only=True)
     category = serializers.StringRelatedField()
 
 
 class WriteProductSerializer(serializers.ModelSerializer):
+    """Serializer class of Product model for writing [POST, PUT, PATCH]"""
+
     class Meta:
         model = Product
         fields = [
             "name",
-            "image",
             "description",
             "quantity",
             "price",
@@ -70,6 +84,8 @@ class WriteProductSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    """Serializer class of Category model [*]"""
+
     class Meta:
         model = Category
         fields = ["id", "name", "description", "total_products"]

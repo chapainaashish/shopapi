@@ -38,6 +38,12 @@ class CartItemSerializer(serializers.ModelSerializer):
         return cart_item
 
 
+class UpdateCartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CartItem
+        fields = ["quantity"]
+
+
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
@@ -50,6 +56,15 @@ class CartSerializer(serializers.ModelSerializer):
     def get_total_price(self, cart):
         """Return total cart items price"""
         return sum([item.quantity * item.product.price for item in cart.items.all()])
+
+    def validate(self, attrs):
+        """Override to validate one user can have only one cart"""
+        user = self.context["user"]
+        if Cart.objects.filter(user=user).exists():
+            raise serializers.ValidationError(
+                {"error": "You already have a created cart"}
+            )
+        return attrs
 
     def create(self, validated_data):
         """Create new cart for logged in user"""

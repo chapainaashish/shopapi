@@ -1,10 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Cart, CartItem
-from .serializers import CartItemSerializer, CartSerializer
+from .serializers import CartItemSerializer, CartSerializer, UpdateCartItemSerializer
 
 
 class CartViewset(ModelViewSet):
+    http_method_names = ["get", "post", "delete"]
     serializer_class = CartSerializer
 
     def get_serializer_context(self):
@@ -18,8 +19,7 @@ class CartViewset(ModelViewSet):
 
 
 class CartItemViewset(ModelViewSet):
-    serializer_class = CartItemSerializer
-    queryset = CartItem.objects.all()
+    http_method_names = ["get", "post", "patch", "delete"]
 
     def get_queryset(self):
         """Overriding to load only cart specific items"""
@@ -29,3 +29,8 @@ class CartItemViewset(ModelViewSet):
     def get_serializer_context(self):
         """Overriding to return cart pk for creating cart items"""
         return {"cart_pk": self.kwargs["cart_pk"]}
+
+    def get_serializer_class(self):
+        if self.request.method == "PATCH":
+            return UpdateCartItemSerializer
+        return CartItemSerializer

@@ -19,6 +19,11 @@ class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def total_price(self):
+        """Return total cart price"""
+
+        return sum([item.quantity * item.product.price for item in self.items.all()])
+
     def __str__(self) -> str:
         return str(self.user) + str(self.created_at)
 
@@ -44,6 +49,14 @@ class CartItem(models.Model):
         validators=[MinValueValidator(1)],
         help_text="Enter the product quantity",
     )
+
+    def unit_price(self):
+        """Return cart item unit price"""
+        return self.product.price
+
+    def total_price(self):
+        """Return cart item total price"""
+        return self.product.price * self.quantity
 
     class Meta:
         unique_together = ("cart", "product")

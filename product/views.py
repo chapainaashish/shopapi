@@ -18,6 +18,8 @@ from .serializer import (
 
 
 class ProductViewset(ModelViewSet):
+    """A viewset for Product model"""
+
     queryset = Product.objects.annotate(average_rating=Avg("reviews__rating"))
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
@@ -34,6 +36,8 @@ class ProductViewset(ModelViewSet):
 
 
 class CategoryViewset(ModelViewSet):
+    """A viewset for Category model"""
+
     queryset = Category.objects.annotate(total_products=Count("products"))
     permission_classes = [IsAdminOrReadOnly]
     serializer_class = CategorySerializer
@@ -43,6 +47,8 @@ class CategoryViewset(ModelViewSet):
 
 
 class ReviewViewset(ModelViewSet):
+    """A viewset for Review model"""
+
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     http_method_names = ["get", "post", "patch", "delete"]
     filter_backends = [OrderingFilter]

@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Cart, CartItem
@@ -7,6 +8,7 @@ from .serializers import CartItemSerializer, CartSerializer, UpdateCartItemSeria
 class CartViewset(ModelViewSet):
     http_method_names = ["get", "post", "delete"]
     serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_context(self):
         """Overriding to return current user to create cart"""
@@ -20,10 +22,11 @@ class CartViewset(ModelViewSet):
 
 class CartItemViewset(ModelViewSet):
     http_method_names = ["get", "post", "patch", "delete"]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        """Overriding to load only cart specific items"""
         items = CartItem.objects.filter(cart=self.kwargs["cart_pk"])
+        """Overriding to load only cart specific items"""
         return items
 
     def get_serializer_context(self):

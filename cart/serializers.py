@@ -8,18 +8,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ["id", "product", "quantity", "unit_price", "total_price"]
 
-    unit_price = serializers.SerializerMethodField(method_name="get_unit_price")
-    total_price = serializers.SerializerMethodField(method_name="get_total_price")
-    # product = serializers.StringRelatedField()
-
-    def get_unit_price(self, item):
-        """Return current item price"""
-        return item.product.price
-
-    def get_total_price(self, item):
-        """Return item total price"""
-        return item.product.price * item.quantity
-
     def create(self, validated_data):
         """Add product item to the cart"""
         cart_pk = self.context["cart_pk"]
@@ -51,11 +39,6 @@ class CartSerializer(serializers.ModelSerializer):
 
     user = serializers.StringRelatedField(read_only=True)
     items = CartItemSerializer(many=True, read_only=True)
-    total_price = serializers.SerializerMethodField(method_name="get_total_price")
-
-    def get_total_price(self, cart):
-        """Return total cart items price"""
-        return sum([item.quantity * item.product.price for item in cart.items.all()])
 
     def validate(self, attrs):
         """Override to validate one user can have only one cart"""

@@ -1,1 +1,4 @@
-- user can only change his/her product review
+- user can only change his/her product review [done]
+- user can't order more product than in stock
+- user can't add more product in cart than in stock
+- 

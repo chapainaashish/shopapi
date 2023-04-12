@@ -3,7 +3,7 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
-from product.pagination import DefaultPagination
+from backends.pagination import DefaultPagination
 
 from .models import Order, OrderItem, Payment
 from .permissison import NormalUserPermission
@@ -17,7 +17,7 @@ from .serializer import (
 
 
 class OrderItemViewset(ModelViewSet):
-    """A viewset for OrderItem model"""
+    """Viewset for OrderItem model"""
 
     serializer_class = OrderItemSerializer
     http_method_names = ["get", "delete"]
@@ -30,9 +30,9 @@ class OrderItemViewset(ModelViewSet):
 
 
 class OrderViewset(ModelViewSet):
-    """A viewset for Order model"""
+    """Viewset for Order model"""
 
-    permission_classes = [NormalUserPermission]
+    permission_classes = [NormalUserPermission, IsAuthenticated]
     http_method_names = ["get", "post", "patch", "delete"]
     filter_backends = [OrderingFilter]
     ordering_fields = ["created_at"]
@@ -65,7 +65,7 @@ class OrderViewset(ModelViewSet):
 
 
 class PaymentView(RetrieveUpdateAPIView):
-    """A viewset for order payment"""
+    """Viewset for Payment model"""
 
     permission_classes = [IsAuthenticated]
     queryset = Payment.objects.all()

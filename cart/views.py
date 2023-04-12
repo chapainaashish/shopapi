@@ -6,6 +6,8 @@ from .serializers import CartItemSerializer, CartSerializer, UpdateCartItemSeria
 
 
 class CartViewset(ModelViewSet):
+    """Viewset for Cart model"""
+
     http_method_names = ["get", "post", "delete"]
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
@@ -21,12 +23,14 @@ class CartViewset(ModelViewSet):
 
 
 class CartItemViewset(ModelViewSet):
+    """Viewset for CartItem model"""
+
     http_method_names = ["get", "post", "patch", "delete"]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        items = CartItem.objects.filter(cart=self.kwargs["cart_pk"])
         """Overriding to load only cart specific items"""
+        items = CartItem.objects.filter(cart=self.kwargs["cart_pk"])
         return items
 
     def get_serializer_context(self):
@@ -34,6 +38,7 @@ class CartItemViewset(ModelViewSet):
         return {"cart_pk": self.kwargs["cart_pk"]}
 
     def get_serializer_class(self):
+        """Return serializer class based on HTTP request method"""
         if self.request.method == "PATCH":
             return UpdateCartItemSerializer
         return CartItemSerializer

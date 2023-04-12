@@ -4,6 +4,8 @@ from .models import Cart, CartItem
 
 
 class CartItemSerializer(serializers.ModelSerializer):
+    """Serializer class of CartItem model [GET, POST, DELETE]"""
+
     class Meta:
         model = CartItem
         fields = ["id", "product", "quantity", "unit_price", "total_price"]
@@ -27,12 +29,16 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class UpdateCartItemSerializer(serializers.ModelSerializer):
+    """Serializer class of CartItem model for update [PATCH]"""
+
     class Meta:
         model = CartItem
         fields = ["quantity"]
 
 
 class CartSerializer(serializers.ModelSerializer):
+    """Serializer class for Cart model[*]"""
+
     class Meta:
         model = Cart
         fields = ["id", "user", "created_at", "updated_at", "total_price", "items"]

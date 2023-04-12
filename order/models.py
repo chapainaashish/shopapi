@@ -43,6 +43,10 @@ class Order(models.Model):
         max_length=1, choices=DELIVERY_CHOICES, default=DELIVERY_PENDING
     )
 
+    def total_price(self):
+        """Return total order price"""
+        return sum([item.quantity * item.product.price for item in self.items.all()])
+
     def __str__(self) -> str:
         return str(self.user) + str(self.created_at)
 
@@ -70,6 +74,10 @@ class OrderItem(models.Model):
         validators=[MinValueValidator(1)],
         help_text="Enter the product quantity",
     )
+
+    def total_price(self):
+        """Return order item total price"""
+        return self.ordered_price * self.quantity
 
     def __str__(self) -> str:
         return str(self.order)

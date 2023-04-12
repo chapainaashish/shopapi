@@ -1,20 +1,28 @@
+from rest_framework.filters import OrderingFilter
 from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from product.pagination import DefaultPagination
+
 from .models import Order, OrderItem, Payment
+from .permissison import NormalUserPermission
 from .serializer import (
     OrderItemSerializer,
     PaymentSerializer,
     ReadOrderSerializer,
+    UpdateOrderSerializer,
     WriteOrderSerializer,
 )
 
 
 class OrderItemViewset(ModelViewSet):
-    serializer_class = OrderItemSerializer
+    """A viewset for OrderItem model"""
 
-    def get_serializer_context(self):
-        return {"order_pk": self.kwargs["order_pk"]}
+    serializer_class = OrderItemSerializer
+    http_method_names = ["get", "delete"]
+    permission_classes = [IsAuthenticated]
+    pagination_class = DefaultPagination
 
     def get_queryset(self):
         items = OrderItem.objects.filter(order=self.kwargs["order_pk"])
@@ -22,34 +30,43 @@ class OrderItemViewset(ModelViewSet):
 
 
 class OrderViewset(ModelViewSet):
+    """A viewset for Order model"""
+
+    permission_classes = [NormalUserPermission]
+    http_method_names = ["get", "post", "patch", "delete"]
+    filter_backends = [OrderingFilter]
+    ordering_fields = ["created_at"]
+    pagination_class = DefaultPagination
+
     def get_serializer_context(self):
+        """Returns current logged in user"""
         return {"user": self.request.user}
 
     def get_queryset(self):
-        """Return only current user associated orders"""
-        order = (
+        """Return order according to user"""
+        if self.request.user.is_staff:
+            return Order.objects.prefetch_related("items").all()
+
+        return (
             Order.objects.prefetch_related("items").filter(user=self.request.user).all()
         )
-        return order
 
     def get_serializer_class(self):
         """Return serializer class based on request"""
+
         if self.request.method == "POST":
             return WriteOrderSerializer
+
+        elif self.request.method == "PATCH":
+            return UpdateOrderSerializer
+
         else:
             return ReadOrderSerializer
 
 
 class PaymentView(RetrieveUpdateAPIView):
+    """A viewset for order payment"""
+
+    permission_classes = [IsAuthenticated]
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
-
-
-"""
-class PaymentViewset(ModelViewSet):
-    serializer_class = PaymentSerializer
-
-    def get_queryset(self):
-        queryset = Payment.objects.filter(order=self.kwargs["order_pk"])
-        return queryset
-"""

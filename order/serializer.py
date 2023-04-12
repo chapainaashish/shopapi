@@ -1,31 +1,26 @@
-from rest_framework import serializers, status
-from rest_framework.response import Response
+from rest_framework import serializers
 
 from cart.models import Cart, CartItem
 from customer.models import Address
+from customer.serializer import ReadAddressSerializer
 
 from .models import Order, OrderItem, Payment
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    """Serializer class of OrderItem model[*]"""
+
     class Meta:
         model = OrderItem
-        fields = ["id", "product", "ordered_price", "quantity"]
+        fields = ["id", "product", "ordered_price", "quantity", "total_price"]
 
     ordered_price = serializers.ReadOnlyField()
-    # product = serializers.StringRelatedField(read_only=True)
-
-    def create(self, validated_data):
-        """Add item to the associated order"""
-        order_pk = self.context["order_pk"]
-        return OrderItem.objects.create(
-            order_id=order_pk,
-            ordered_price=validated_data["product"].price,
-            **validated_data
-        )
+    product = serializers.StringRelatedField()
 
 
 class PaymentSerializer(serializers.ModelSerializer):
+    """Serializer class of Payment model[*]"""
+
     class Meta:
         model = Payment
         fields = ["order", "status", "updated_at"]
@@ -34,7 +29,7 @@ class PaymentSerializer(serializers.ModelSerializer):
 
 
 class ReadOrderSerializer(serializers.ModelSerializer):
-    """Serializer for Order GET request"""
+    """Serializer class  for Order model [GET]"""
 
     class Meta:
         model = Order
@@ -43,23 +38,31 @@ class ReadOrderSerializer(serializers.ModelSerializer):
             "user",
             "created_at",
             "updated_at",
-            "billing_address",
-            "shipping_address",
             "delivery",
             "payment",
+            "total_price",
+            "billing_address",
+            "shipping_address",
             "items",
         ]
 
-    user = serializers.StringRelatedField(read_only=True)
-    payment = serializers.StringRelatedField(read_only=True)
-    items = OrderItemSerializer(read_only=True, many=True)
-    delivery = serializers.ReadOnlyField()
+    user = serializers.StringRelatedField()
+    payment = serializers.StringRelatedField()
+    items = OrderItemSerializer(many=True)
+    billing_address = ReadAddressSerializer()
+    shipping_address = ReadAddressSerializer()
 
 
-# get cart id and check if it's belongs to the user
-# create a new order and move cart items to order items
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    """Serializer for Order model [PATCH]"""
+
+    class Meta:
+        model = Order
+        fields = ["delivery"]
+
+
 class WriteOrderSerializer(serializers.Serializer):
-    """Serializer for Order POST request"""
+    """Serializer class for Order model [POST]"""
 
     cart_id = serializers.IntegerField()
     billing_address = serializers.PrimaryKeyRelatedField(
@@ -69,7 +72,7 @@ class WriteOrderSerializer(serializers.Serializer):
         queryset=Address.objects.none()
     )
 
-    # so that, user can only choose his/her address from Address table while ordering
+    # user can only choose his/her address from Address table while ordering
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         user = self.context.get("user")

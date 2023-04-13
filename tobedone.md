@@ -4,7 +4,7 @@ PHASE 1
 - user can't submit empty cart [done]
 - add transaction atomicity[order and cart [done]
 - order will be delete if there is no order items  [done]
-- product image functionality
+- product image functionality [done]
 
 PHASE 1.5
 - optimize query with debug_toolbar

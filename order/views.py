@@ -25,7 +25,9 @@ class OrderItemViewset(ModelViewSet):
     pagination_class = DefaultPagination
 
     def get_queryset(self):
-        items = OrderItem.objects.filter(order=self.kwargs["order_pk"])
+        items = OrderItem.objects.prefetch_related("product").filter(
+            order=self.kwargs["order_pk"]
+        )
         return items
 
 
@@ -43,13 +45,21 @@ class OrderViewset(ModelViewSet):
         return {"user": self.request.user}
 
     def get_queryset(self):
-        """Return order according to user"""
-        if self.request.user.is_staff:
-            return Order.objects.prefetch_related("items").all()
-
-        return (
-            Order.objects.prefetch_related("items").filter(user=self.request.user).all()
+        """Return user orders"""
+        queryset = (
+            Order.objects.select_related("user")
+            .select_related("payment")
+            .select_related("billing_address")
+            .select_related("shipping_address")
+            .prefetch_related("items")
+            .prefetch_related("items__product")
+            .all()
         )
+
+        if self.request.user.is_staff:
+            return queryset
+
+        return queryset.filter(user=self.request.user).all()
 
     def get_serializer_class(self):
         """Return serializer class based on request"""

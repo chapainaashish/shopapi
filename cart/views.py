@@ -18,7 +18,11 @@ class CartViewset(ModelViewSet):
 
     def get_queryset(self):
         """Overriding to load only user specific cart"""
-        queryset = Cart.objects.prefetch_related("items").filter(user=self.request.user)
+        queryset = (
+            Cart.objects.prefetch_related("items")
+            .select_related("user")
+            .filter(user=self.request.user)
+        )
         return queryset
 
 
@@ -30,7 +34,9 @@ class CartItemViewset(ModelViewSet):
 
     def get_queryset(self):
         """Overriding to load only cart specific items"""
-        items = CartItem.objects.filter(cart=self.kwargs["cart_pk"])
+        items = CartItem.objects.select_related("product").filter(
+            cart=self.kwargs["cart_pk"]
+        )
         return items
 
     def get_serializer_context(self):

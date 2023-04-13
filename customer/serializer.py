@@ -8,12 +8,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "user", "image", "phone"]
+        fields = ["id", "image", "phone"]
 
     def validate(self, attrs):
         """Override to validate one user can have only one profile"""
-        user = self.context["user"]
-        if Profile.objects.filter(user=user).exists():
+        if Profile.objects.filter(user=self.context["user"]).exists():
             raise serializers.ValidationError({"error": "You already have a profile"})
         return attrs
 
@@ -21,17 +20,13 @@ class ProfileSerializer(serializers.ModelSerializer):
         """Creating profile object of associated user"""
         return Profile.objects.create(user=self.context.get("user"), **validated_data)
 
-    user = serializers.StringRelatedField(read_only=True)
-
 
 class ReadAddressSerializer(serializers.ModelSerializer):
     """Serializer of Address model for reading[GET]"""
 
     class Meta:
         model = Address
-        fields = ["id", "user", "house_no", "street", "city", "postal_code", "country"]
-
-    user = serializers.StringRelatedField()
+        fields = ["id", "house_no", "street", "city", "postal_code", "country"]
 
 
 class WriteAddressSerializer(serializers.ModelSerializer):

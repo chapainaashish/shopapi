@@ -40,7 +40,7 @@ class Address(models.Model):
         updated_at (datetime): date and time the address was updated
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="address")
     house_no = models.CharField(max_length=255, help_text="Enter the house no")
     street = models.CharField(max_length=255, help_text="Enter the street")
     city = models.CharField(max_length=255, help_text="Enter the city")

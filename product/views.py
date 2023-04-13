@@ -21,7 +21,12 @@ from .serializer import (
 class ProductViewset(ModelViewSet):
     """A viewset for Product model"""
 
-    queryset = Product.objects.annotate(average_rating=Avg("reviews__rating"))
+    queryset = (
+        Product.objects.annotate(average_rating=Avg("reviews__rating"))
+        .select_related("category")
+        .prefetch_related("reviews")
+        .prefetch_related("reviews__user")
+    )
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = ProductFilter
@@ -58,7 +63,9 @@ class ReviewViewset(ModelViewSet):
 
     def get_queryset(self):
         """Overriding for getting product specific reviews"""
-        queryset = Review.objects.filter(product_id=self.kwargs["product_pk"])
+        queryset = Review.objects.filter(
+            product_id=self.kwargs["product_pk"]
+        ).select_related("user")
         return queryset
 
     def get_serializer_context(self):

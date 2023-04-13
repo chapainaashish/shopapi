@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "djoser",
     "django_filters",
     "debug_toolbar",
     "customer",
@@ -122,4 +123,13 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # for transferring decimal field so that it won't changed it to string
-REST_FRAMEWORK = {"COERCE_DECIMAL_TO_STRING": False}
+
+REST_FRAMEWORK = {
+    "COERCE_DECIMAL_TO_STRING": False,
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+}

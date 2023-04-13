@@ -18,6 +18,8 @@ phonenumbers = "^8.13.7"
 drf-nested-routers = "^0.93.4"
 django-debug-toolbar = "^4.0.0"
 django-filter = "^23.1"
+djoser = "^2.1.0"
+djangorestframework-simplejwt = "^5.2.2"
 
 
 [tool.poetry.group.dev.dependencies]

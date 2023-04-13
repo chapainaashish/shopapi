@@ -3,13 +3,12 @@ PHASE 1
 - user can't add more product in cart than in stock [done]
 - user can't submit empty cart [done]
 - add transaction atomicity[order and cart [done]
-- order will be delete if there is no order items  [done]
 - product image functionality [done]
 
 PHASE 1.5
-- optimize query with debug_toolbar
+- optimize query with debug_toolbar [done]
   
-PHASE 2s
+PHASE 2
 - add jwt authentication
 - integrate stripe
 
@@ -20,7 +19,7 @@ PHASE 3
 
 PHASE 4
 - create automated test
-- do performance tests
+- do performance test
 
 PHASE 5
 - deploy

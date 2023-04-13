@@ -1,8 +1,10 @@
+from django.db import transaction
 from rest_framework import serializers
 
 from cart.models import Cart, CartItem
 from customer.models import Address
 from customer.serializer import ReadAddressSerializer
+from product.models import Product
 
 from .models import Order, OrderItem, Payment
 
@@ -79,6 +81,20 @@ class WriteOrderSerializer(serializers.Serializer):
         self.fields["billing_address"].queryset = Address.objects.filter(user=user)
         self.fields["shipping_address"].queryset = Address.objects.filter(user=user)
 
+    def validate(self, attrs):
+        """Validate whether the cart exists and contains items"""
+        cart = Cart.objects.filter(
+            pk=attrs.get("cart_id"), user=self.context.get("user")
+        )
+
+        if not cart.exists():
+            raise serializers.ValidationError({"error": "invalid cart"})
+
+        if cart.first().items.count() < 1:
+            raise serializers.ValidationError({"error": "no item added to the cart"})
+
+        return attrs
+
     def save(self, **kwargs):
         """Create an order from the cart"""
 
@@ -87,8 +103,7 @@ class WriteOrderSerializer(serializers.Serializer):
         cart_id = self.validated_data.get("cart_id")
         cart = Cart.objects.filter(pk=cart_id, user=user)
 
-        # if the cart belongs to the user
-        if cart.exists():
+        with transaction.atomic():
             order = Order.objects.create(
                 user=user,
                 billing_address=self.validated_data["billing_address"],
@@ -107,9 +122,19 @@ class WriteOrderSerializer(serializers.Serializer):
                 )
                 for item in cart_items
             ]
+
+            # updating product quantity after order
+            # TODO bulk update, move this to validate
+            for item in cart_items:
+                product = Product.objects.get(pk=item.product.id)
+                if product.quantity < item.quantity:
+                    raise serializers.ValidationError(
+                        {
+                            "error": "You can't order more than product quantity, Please check the quantity first"
+                        }
+                    )
+                product.quantity = product.quantity - item.quantity
+                product.save()
+
             OrderItem.objects.bulk_create(order_items)
-
             cart.delete()
-
-        else:
-            raise serializers.ValidationError({"error": "invalid cart"})

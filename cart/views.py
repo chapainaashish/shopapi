@@ -35,7 +35,7 @@ class CartItemViewset(ModelViewSet):
 
     def get_serializer_context(self):
         """Overriding to return cart pk for creating cart items"""
-        return {"cart_pk": self.kwargs["cart_pk"]}
+        return {"cart_pk": self.kwargs["cart_pk"], "pk": self.kwargs.get("pk")}
 
     def get_serializer_class(self):
         """Return serializer class based on HTTP request method"""

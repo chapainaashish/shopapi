@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from product.models import Product
+
 from .models import Cart, CartItem
 
 
@@ -27,6 +29,22 @@ class CartItemSerializer(serializers.ModelSerializer):
 
         return cart_item
 
+    def validate(self, attrs):
+        """Validate cart item quantity isn't greater than product quantity"""
+        product = attrs["product"]
+        try:
+            cart_item = CartItem.objects.get(
+                product=product, cart_id=self.context["cart_pk"]
+            )
+            quantity = cart_item.quantity
+        except CartItem.DoesNotExist:
+            quantity = 0
+
+        total_quantity = attrs["quantity"] + quantity
+        if total_quantity > product.quantity:
+            raise serializers.ValidationError({"error": "Product quantity exceeded"})
+        return attrs
+
 
 class UpdateCartItemSerializer(serializers.ModelSerializer):
     """Serializer class of CartItem model for update [PATCH]"""
@@ -34,6 +52,16 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
         fields = ["quantity"]
+
+    def validate(self, attrs):
+        """Validate cart item quantity isn't greater than product quantity"""
+        cart_item = CartItem.objects.get(pk=self.context["pk"])
+        quantity = cart_item.product.quantity
+
+        if attrs["quantity"] > quantity:
+            raise serializers.ValidationError({"error": "Product quantity exceeded"})
+
+        return attrs
 
 
 class CartSerializer(serializers.ModelSerializer):

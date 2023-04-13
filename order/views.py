@@ -20,7 +20,7 @@ class OrderItemViewset(ModelViewSet):
     """Viewset for OrderItem model"""
 
     serializer_class = OrderItemSerializer
-    http_method_names = ["get", "delete"]
+    http_method_names = ["get"]
     permission_classes = [IsAuthenticated]
     pagination_class = DefaultPagination
 

@@ -54,6 +54,7 @@ class ReadProductSerializer(serializers.ModelSerializer):
             "id",
             "upc",
             "name",
+            "image",
             "description",
             "quantity",
             "price",
@@ -76,6 +77,7 @@ class WriteProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "name",
+            "image",
             "description",
             "quantity",
             "price",
@@ -88,4 +90,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ["id", "name", "description", "total_products", "created_at", "updated_at"]
+        fields = [
+            "id",
+            "name",
+            "description",
+            "total_products",
+            "created_at",
+            "updated_at",
+        ]

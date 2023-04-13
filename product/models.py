@@ -52,13 +52,12 @@ class Product(models.Model):
 
     upc = models.CharField(max_length=12, unique=True, blank=True)
     name = models.CharField(max_length=255, help_text="Enter the product name")
-    # image = models.ImageField(
-    #     upload_to="product/images",
-    #     default="product/images/default.jpg",
-    #     help_text="Enter the product image",
-    #     blank=True,
-    #     null=True
-    # )
+    image = models.ImageField(
+        upload_to="product/images",
+        default="product/images/default.jpg",
+        help_text="Enter the product image",
+        blank=True,
+    )
     description = models.TextField(
         blank=True, null=True, help_text="Enter the product description"
     )

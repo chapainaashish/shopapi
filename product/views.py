@@ -5,10 +5,11 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet
 
 from backends.pagination import DefaultPagination
+from backends.permission import IsAdminOrReadOnly
 
 from .filters import ProductFilter
 from .models import Category, Product, Review
-from .permissions import IsAdminOrReadOnly, IsAuthorOrReadOnly
+from .permissions import IsAuthorOrReadOnly
 from .serializer import (
     CategorySerializer,
     ReadProductSerializer,

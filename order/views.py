@@ -4,9 +4,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from backends.pagination import DefaultPagination
+from backends.permission import IsAdminOrReadOnly
 
 from .models import Order, OrderItem, Payment
-from .permissison import NormalUserPermission
+from .permission import NormalUserPermission
 from .serializer import (
     OrderItemSerializer,
     PaymentSerializer,
@@ -77,6 +78,6 @@ class OrderViewset(ModelViewSet):
 class PaymentView(RetrieveUpdateAPIView):
     """Viewset for Payment model"""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer

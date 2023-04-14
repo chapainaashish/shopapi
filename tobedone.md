@@ -9,17 +9,17 @@ PHASE 1.5
 - optimize query with debug_toolbar [done]
   
 PHASE 2
-- add jwt authentication
-- integrate stripe
+- add jwt authentication [done]
+- integrate stripe [pending]
 
 PHASE 3
+- create automated test
+- do performance test
+  
+PHASE 4
 - learn docker [5 days]
 - send user email after order is delivered[using celery]
 - use redis for caching
-
-PHASE 4
-- create automated test
-- do performance test
 
 PHASE 5
 - deploy

@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+from order.models import Payment
+
 from .models import Address, Profile
 
 
@@ -39,3 +41,18 @@ class WriteAddressSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Creating address object of associated user"""
         return Address.objects.create(user=self.context.get("user"), **validated_data)
+
+
+class ReadPaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ["order_id", "order", "status", "updated_at"]
+
+    order_id = serializers.IntegerField(source="order.id")
+    order = serializers.StringRelatedField(source="order.created_at")
+
+
+class WritePaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ["status"]

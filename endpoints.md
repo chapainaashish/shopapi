@@ -8,6 +8,8 @@ product                                 GET                         GET, POST   
 product/pk                              GET                         GET                       GET, PUT, PATCH, DELETE
 product/pk/reviews                      GET                         GET, POST                 GET, POST
 product/pk/reviews/pk                   GET                         GET, PATCH, DELETE        GET, PATCH, DELETE
+product/pk/reviews                      GET                         GET, POST                 GET, POST
+product/pk/reviews/pk                   GET                         GET, PATCH, DELETE        GET, PATCH, DELETE
 
 cart                                    -                           GET, POST                 GET, POST
 cart/pk                                 -                           GET                       GET

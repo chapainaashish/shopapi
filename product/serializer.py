@@ -34,7 +34,9 @@ class WriteReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ["description", "rating"]
+        fields = ["id", "description", "rating"]
+
+    id = serializers.ReadOnlyField()
 
     def validate(self, attrs):
         """Overriding to check if user has already reviewed the product or not"""
@@ -93,12 +95,15 @@ class WriteProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
+            "id",
             "name",
             "description",
             "quantity",
             "price",
             "category",
         ]
+
+        id = serializers.ReadOnlyField()
 
 
 class CategorySerializer(serializers.ModelSerializer):

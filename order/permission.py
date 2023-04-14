@@ -7,4 +7,4 @@ class NormalUserPermission(IsAuthenticated):
     def has_permission(self, request, view):
         if request.method == "PATCH" and request.user.is_staff:
             return True
-        return request.method in ["GET", "POST", "DELETE"]
+        return request.method in ["GET", "POST"]

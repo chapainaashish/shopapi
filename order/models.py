@@ -12,6 +12,8 @@ class Order(models.Model):
 
     Attributes:
         user (User): user who placed the order
+        billing_address(Address): user address that is where bill sent
+        shipping_address(Address): user address that is where order is shipped
         created_at (datetime): date and time when the order was created
         updated_at (datetime): date and time when the order was last updated
         delivery (char): status of the order delivery, can be one of:

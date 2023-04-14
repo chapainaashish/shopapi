@@ -8,10 +8,11 @@ from backends.pagination import DefaultPagination
 from backends.permission import IsAdminOrReadOnly
 
 from .filters import ProductFilter
-from .models import Category, Product, Review
+from .models import Category, Product, ProductImage, Review
 from .permissions import IsAuthorOrReadOnly
 from .serializer import (
     CategorySerializer,
+    ProductImageSerializer,
     ReadProductSerializer,
     ReadReviewSerializer,
     WriteProductSerializer,
@@ -40,6 +41,24 @@ class ProductViewset(ModelViewSet):
         if self.request.method == "GET":
             return ReadProductSerializer
         return WriteProductSerializer
+
+
+class ProductImageViewset(ModelViewSet):
+    """A viewset for ProductImage model"""
+
+    serializer_class = ProductImageSerializer
+    permission_classes = [IsAdminOrReadOnly]
+
+    def get_queryset(self):
+        """Overriding for getting product specific images"""
+
+        return ProductImage.objects.filter(product=self.kwargs["product_pk"])
+
+    def get_serializer_context(self):
+        """Overriding to return product pk for uploading product image"""
+        return {
+            "product_pk": self.kwargs["product_pk"],
+        }
 
 
 class CategoryViewset(ModelViewSet):

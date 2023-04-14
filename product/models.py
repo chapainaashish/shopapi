@@ -41,7 +41,6 @@ class Product(models.Model):
     Attributes:
         upc (str): 12 character unique product code
         name (str): name of the product
-        # image (str): image file of the product
         description (str, optional): description of the product
         price (Decimal): price of the product
         quantity (int): quantity of the product in stock
@@ -52,12 +51,6 @@ class Product(models.Model):
 
     upc = models.CharField(max_length=12, unique=True, blank=True)
     name = models.CharField(max_length=255, help_text="Enter the product name")
-    image = models.ImageField(
-        upload_to="product/images",
-        default="product/images/default.jpg",
-        help_text="Enter the product image",
-        blank=True,
-    )
     description = models.TextField(
         blank=True, null=True, help_text="Enter the product description"
     )
@@ -89,9 +82,28 @@ class Product(models.Model):
         return str(self.name)
 
 
+class ProductImage(models.Model):
+    """
+    A model representing a image of the product
+
+    Attributes:
+        product (Product): product that is associated with image
+        image (Image): image of the product
+    """
+
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images"
+    )
+    image = models.ImageField(
+        upload_to="product/images",
+        help_text="Enter the product image",
+        blank=True,
+    )
+
+
 class Review(models.Model):
     """
-    A model representing a review of a product
+    A model representing a review of the product
 
     Attributes:
         user (User): user of the review

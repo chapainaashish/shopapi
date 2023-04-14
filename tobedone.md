@@ -10,6 +10,7 @@ PHASE 1.5
   
 PHASE 2
 - add jwt authentication [done]
+- delete order if there is no order item left [pending]
 - integrate stripe [pending]
 
 PHASE 3

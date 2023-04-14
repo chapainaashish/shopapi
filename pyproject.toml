@@ -20,6 +20,7 @@ django-debug-toolbar = "^4.0.0"
 django-filter = "^23.1"
 djoser = "^2.1.0"
 djangorestframework-simplejwt = "^5.2.2"
+pytest = "^7.3.0"
 
 
 [tool.poetry.group.dev.dependencies]

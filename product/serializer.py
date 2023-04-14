@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Category, Product, Review
+from .models import Category, Product, ProductImage, Review
 
 
 class ReadReviewSerializer(serializers.ModelSerializer):
@@ -11,6 +11,22 @@ class ReadReviewSerializer(serializers.ModelSerializer):
         fields = ["id", "user", "description", "rating", "created_at", "updated_at"]
 
     user = serializers.ReadOnlyField(source="user.username")
+
+
+class ProductImageSerializer(serializers.ModelSerializer):
+    """Serializer class of ProductImage model [*]"""
+
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
+    id = serializers.ReadOnlyField()
+
+    def create(self, validated_data):
+        """Overriding to associate image with related product"""
+        return ProductImage.objects.create(
+            product_id=self.context["product_pk"], **validated_data
+        )
 
 
 class WriteReviewSerializer(serializers.ModelSerializer):
@@ -54,7 +70,6 @@ class ReadProductSerializer(serializers.ModelSerializer):
             "id",
             "upc",
             "name",
-            "image",
             "description",
             "quantity",
             "price",
@@ -62,12 +77,14 @@ class ReadProductSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "average_rating",
+            "images",
             "reviews",
         ]
 
     # for nested relationship
     reviews = ReadReviewSerializer(many=True, read_only=True)
     category = serializers.StringRelatedField()
+    images = ProductImageSerializer(many=True, read_only=True)
 
 
 class WriteProductSerializer(serializers.ModelSerializer):
@@ -77,7 +94,6 @@ class WriteProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "name",
-            "image",
             "description",
             "quantity",
             "price",

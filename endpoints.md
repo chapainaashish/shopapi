@@ -17,9 +17,9 @@ cart/pk/items                           -                           GET, POST   
 cart/pk/items/pk                        -                           GET, PATCH, DELETE        GET, PATCH, DELETE
 
 order                                   -                           GET, POST                 GET, POST                           
-order/pk                                -                           GET, DELETE               GET, PATCH, DELETE
+order/pk                                -                           GET                       GET, PATCH
 order/pk/items                          -                           GET                       GET
-order/pk/items/pk                       -                           GET, DELETE               GET, DELETE 
+order/pk/items/pk                       -                           GET                       GET
 order/pk/payment                        -                           GET                       GET, PATCH, DELETE
 
 

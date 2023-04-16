@@ -21,15 +21,18 @@ class OrderItemViewset(ModelViewSet):
     """Viewset for OrderItem model"""
 
     serializer_class = OrderItemSerializer
-    http_method_names = ["get"]
+    http_method_names = ["get", "delete"]
     permission_classes = [IsAuthenticated]
     pagination_class = DefaultPagination
 
     def get_queryset(self):
-        items = OrderItem.objects.prefetch_related("product").filter(
-            order=self.kwargs["order_pk"]
+        if self.request.user.is_staff:
+            return OrderItem.objects.prefetch_related("product").filter(
+                order=self.kwargs["order_pk"]
+            )
+        return OrderItem.objects.prefetch_related("product").filter(
+            order=self.kwargs["order_pk"], order__user=self.request.user
         )
-        return items
 
 
 class OrderViewset(ModelViewSet):

@@ -1,5 +1,4 @@
 PHASE 1
-<!--! install pytest as developer dependency -->
 - user can only change his/her product review [done]
 - user can't add more product in cart than in stock [done]
 - user can't submit empty cart [done]
@@ -11,11 +10,10 @@ PHASE 1.5
   
 PHASE 2
 - add jwt authentication [done]
-- delete order if there is no order item left [pending]
 - integrate stripe [pending]
 
 PHASE 3
-- create automated test
+- create automated test 
 - do performance test
   
 PHASE 4

@@ -2,13 +2,8 @@ import pytest
 from model_bakery import baker
 from rest_framework import status
 
-from cart.models import Cart, CartItem
+from cart.models import CartItem
 from product.models import Product
-
-
-@pytest.fixture
-def cart(user):
-    return baker.make(Cart, user=user)
 
 
 @pytest.fixture

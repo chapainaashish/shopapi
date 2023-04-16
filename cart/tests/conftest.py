@@ -1,65 +1,9 @@
 import pytest
-from django.contrib.auth.models import User
 from model_bakery import baker
-from rest_framework.test import APIClient
+
+from cart.models import Cart
 
 
 @pytest.fixture
-def api_client():
-    return APIClient()
-
-
-@pytest.fixture
-def authenticate(api_client):
-    """For authenticating normal and admin user"""
-
-    def inner_authenticate(is_staff=False):
-        return api_client.force_authenticate(user=User(is_staff=is_staff))
-
-    return inner_authenticate
-
-
-# we are using same user for authentication and for performing operation in review
-@pytest.fixture
-def request_authenticate(api_client):
-    """For authentication and for request"""
-
-    def inner_request_authenticate(user):
-        return api_client.force_authenticate(user=user)
-
-    return inner_request_authenticate
-
-
-@pytest.fixture
-def send_post_request(api_client):
-    """For sending POST request to particular endpoint with particular data"""
-
-    def inner_send_post_request(endpoint: str, data: dict):
-        return api_client.post(endpoint, data)
-
-    return inner_send_post_request
-
-
-@pytest.fixture
-def send_patch_request(api_client):
-    """For sending PATCH request to particular endpoint with particular data"""
-
-    def inner_send_patch_request(endpoint: str, data: dict):
-        return api_client.patch(endpoint, data)
-
-    return inner_send_patch_request
-
-
-@pytest.fixture
-def send_delete_request(api_client):
-    """For sending DELETE request to particular endpoint with particular data"""
-
-    def inner_send_delete_request(endpoint: str):
-        return api_client.delete(endpoint)
-
-    return inner_send_delete_request
-
-
-@pytest.fixture
-def user():
-    return baker.make(User)
+def cart(user):
+    return baker.make(Cart, user=user)

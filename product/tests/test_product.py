@@ -1,23 +1,10 @@
 import pytest
-from model_bakery import baker
 from rest_framework import status
-
-from product.models import Category, Product
 
 
 @pytest.fixture
 def endpoint():
     return "/store/product/"
-
-
-@pytest.fixture
-def category():
-    return baker.make(Category)
-
-
-@pytest.fixture
-def product():
-    return baker.make(Product)
 
 
 @pytest.fixture

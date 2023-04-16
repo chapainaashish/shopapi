@@ -1,30 +1,8 @@
 import pytest
-from django.contrib.auth.models import User
 from model_bakery import baker
 from rest_framework import status
 
-from product.models import Product, Review
-
-
-@pytest.fixture
-def user():
-    return baker.make(User)
-
-
-# we are using same user for authentication and for performing operation in review
-@pytest.fixture
-def request_authenticate(api_client):
-    """For authentication and for request"""
-
-    def inner_request_authenticate(user):
-        return api_client.force_authenticate(user=user)
-
-    return inner_request_authenticate
-
-
-@pytest.fixture
-def product():
-    return baker.make(Product)
+from product.models import Review
 
 
 @pytest.fixture

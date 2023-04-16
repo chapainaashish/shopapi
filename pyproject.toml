@@ -20,12 +20,15 @@ django-debug-toolbar = "^4.0.0"
 django-filter = "^23.1"
 djoser = "^2.1.0"
 djangorestframework-simplejwt = "^5.2.2"
-pytest = "^7.3.0"
 
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.0.0"
 black = "^23.1.0"
+pytest = "^7.3.0"
+pytest-django = "^4.5.2"
+model-bakery = "^1.11.0"
+pytest-watch = "^4.2.0"
 
 [build-system]
 requires = ["poetry-core"]

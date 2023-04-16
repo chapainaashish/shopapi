@@ -1,4 +1,5 @@
 PHASE 1
+<!--! install pytest as developer dependency -->
 - user can only change his/her product review [done]
 - user can't add more product in cart than in stock [done]
 - user can't submit empty cart [done]
@@ -27,4 +28,3 @@ PHASE 5
 
 PHASE 6
 - documentation [swagger, drf spectacular]
-

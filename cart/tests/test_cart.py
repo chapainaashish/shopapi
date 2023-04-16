@@ -1,25 +1,8 @@
 import pytest
-from django.contrib.auth.models import User
 from model_bakery import baker
 from rest_framework import status
 
 from cart.models import Cart
-
-
-@pytest.fixture
-def user():
-    return baker.make(User)
-
-
-# we are using same user for authentication and for performing operation in review
-@pytest.fixture
-def request_authenticate(api_client):
-    """For authentication and for request"""
-
-    def inner_request_authenticate(user):
-        return api_client.force_authenticate(user=user)
-
-    return inner_request_authenticate
 
 
 @pytest.fixture
@@ -60,16 +43,43 @@ class TestCreateCart:
 class TestRetrieveCart:
     """Testcases of cart endpoint while retrieving cart"""
 
-    def test_user_is_unauthorized_returns_404(
+    def test_user_is_anonymous_returns_401(self, api_client, cart, endpoint):
+        response = api_client.get(f"{endpoint}{cart.id}/")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_user_is_authenticated_but_unauthorized_returns_404(
         self, authenticate, api_client, cart, user, endpoint
     ):
         authenticate(user)
         response = api_client.get(f"{endpoint}{cart.id}/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_user_is_authorized_returns_200(
+    def test_user_is_authenticated_and_authorized_returns_200(
         self, request_authenticate, api_client, cart, user, endpoint
     ):
         request_authenticate(user)
         response = api_client.get(f"{endpoint}{cart.id}/")
         assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+class TestDeleteCart:
+    """Testcases of cart endpoint while deleting cart"""
+
+    def test_user_is_anonymous_returns_401(self, cart, endpoint, send_delete_request):
+        response = send_delete_request(f"{endpoint}{cart.id}/")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_user_is_authenticated_but_unauthorized_returns_404(
+        self, authenticate, cart, user, endpoint, send_delete_request
+    ):
+        authenticate(user)
+        response = send_delete_request(f"{endpoint}{cart.id}/")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    def test_user_is_authenticated_and_authorized_returns_200(
+        self, request_authenticate, cart, user, endpoint, send_delete_request
+    ):
+        request_authenticate(user)
+        response = send_delete_request(f"{endpoint}{cart.id}/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT

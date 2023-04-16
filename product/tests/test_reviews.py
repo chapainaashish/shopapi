@@ -146,14 +146,14 @@ class TestDeleteProduct:
         response = send_delete_request(f"{endpoint}{review.id}/")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_not_author_403(
+    def test_user_is_authenticated_but_not_authorized_403(
         self, authenticate, send_delete_request, endpoint, review
     ):
         authenticate()
         response = send_delete_request(f"{endpoint}{review.id}/")
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_user_is_authenticated_and_author_returns_201(
+    def test_user_is_authenticated_and_authorized_returns_201(
         self,
         request_authenticate,
         send_delete_request,

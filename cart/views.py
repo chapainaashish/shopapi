@@ -35,13 +35,17 @@ class CartItemViewset(ModelViewSet):
     def get_queryset(self):
         """Overriding to load only cart specific items"""
         items = CartItem.objects.select_related("product").filter(
-            cart=self.kwargs["cart_pk"]
+            cart=self.kwargs["cart_pk"], cart__user=self.request.user
         )
         return items
 
     def get_serializer_context(self):
         """Overriding to return cart pk for creating cart items"""
-        return {"cart_pk": self.kwargs["cart_pk"], "pk": self.kwargs.get("pk")}
+        return {
+            "cart_pk": self.kwargs["cart_pk"],
+            "pk": self.kwargs.get("pk"),
+            "user": self.request.user,
+        }
 
     def get_serializer_class(self):
         """Return serializer class based on HTTP request method"""

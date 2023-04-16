@@ -39,6 +39,16 @@ def send_patch_request(api_client):
 
 
 @pytest.fixture
+def send_put_request(api_client):
+    """For sending PUT request to particular endpoint with particular data"""
+
+    def inner_send_put_request(endpoint: str, data: dict):
+        return api_client.put(endpoint, data)
+
+    return inner_send_put_request
+
+
+@pytest.fixture
 def send_delete_request(api_client):
     """For sending DELETE request to particular endpoint with particular data"""
 

@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-from product.models import Product
-
 from .models import Cart, CartItem
 
 
@@ -29,9 +27,17 @@ class CartItemSerializer(serializers.ModelSerializer):
 
         return cart_item
 
-    def validate(self, attrs):
+    def validate(self, data):
         """Validate cart item quantity isn't greater than product quantity"""
-        product = attrs["product"]
+
+        # checking if request have valid cart_pk and cart exist
+        cart = Cart.objects.filter(
+            pk=self.context["cart_pk"], user=self.context["user"]
+        )
+        if not cart.exists():
+            raise serializers.ValidationError({"error": "Cart doesn't exist"})
+
+        product = data["product"]
         try:
             cart_item = CartItem.objects.get(
                 product=product, cart_id=self.context["cart_pk"]
@@ -40,10 +46,10 @@ class CartItemSerializer(serializers.ModelSerializer):
         except CartItem.DoesNotExist:
             quantity = 0
 
-        total_quantity = attrs["quantity"] + quantity
+        total_quantity = data["quantity"] + quantity
         if total_quantity > product.quantity:
             raise serializers.ValidationError({"error": "Product quantity exceeded"})
-        return attrs
+        return data
 
 
 class UpdateCartItemSerializer(serializers.ModelSerializer):
@@ -53,15 +59,15 @@ class UpdateCartItemSerializer(serializers.ModelSerializer):
         model = CartItem
         fields = ["quantity"]
 
-    def validate(self, attrs):
+    def validate(self, data):
         """Validate cart item quantity isn't greater than product quantity"""
         cart_item = CartItem.objects.get(pk=self.context["pk"])
         quantity = cart_item.product.quantity
 
-        if attrs["quantity"] > quantity:
+        if data["quantity"] > quantity:
             raise serializers.ValidationError({"error": "Product quantity exceeded"})
 
-        return attrs
+        return data
 
 
 class CartSerializer(serializers.ModelSerializer):
@@ -74,14 +80,14 @@ class CartSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
     items = CartItemSerializer(many=True, read_only=True)
 
-    def validate(self, attrs):
+    def validate(self, data):
         """Override to validate one user can have only one cart"""
         user = self.context["user"]
         if Cart.objects.filter(user=user).exists():
             raise serializers.ValidationError(
                 {"error": "You already have a created cart"}
             )
-        return attrs
+        return data
 
     def create(self, validated_data):
         """Create new cart for logged in user"""

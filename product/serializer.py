@@ -40,10 +40,17 @@ class WriteReviewSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         """Overriding to check if user has already reviewed the product or not"""
+
         product_pk = self.context["product_pk"]
         user = self.context["user"]
-        review_exists = Review.objects.filter(user=user, product_id=product_pk).exists()
 
+        # checking if request have valid product_pk and product exist
+        product = Product.objects.filter(pk=product_pk)
+        if not product.exists():
+            raise serializers.ValidationError({"error": "Product doesn't exist"})
+
+        # checking if user has already reviewed the product
+        review_exists = Review.objects.filter(user=user, product_id=product_pk).exists()
         if self.context["request"].method == "POST" and review_exists:
             raise serializers.ValidationError(
                 {"error": "You have already reviewed this product"}

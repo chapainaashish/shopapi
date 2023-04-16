@@ -125,6 +125,43 @@ class TestPatchProduct:
 
 
 @pytest.mark.django_db
+class TestPutProduct:
+    """Testcases  of product endpoint while updating(PUT) product"""
+
+    def test_user_is_anonymous_returns_401(
+        self, send_put_request, endpoint, product, valid_data
+    ):
+        response = send_put_request(f"{endpoint}{product.id}/", valid_data)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_user_is_authenticated_but_not_admin_returns_401(
+        self, authenticate, send_put_request, endpoint, product, valid_data
+    ):
+        authenticate()
+        response = send_put_request(f"{endpoint}{product.id}/", valid_data)
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+
+    def test_user_is_admin_but_data_invalid_returns_400(
+        self,
+        authenticate,
+        send_put_request,
+        endpoint,
+        product,
+        invalid_data,
+    ):
+        authenticate(is_staff=True)
+        response = send_put_request(f"{endpoint}{product.id}/", invalid_data)
+        assert response.status_code == status.HTTP_400_BAD_REQUEST
+
+    def test_user_is_admin_and_data_valid_returns_201(
+        self, authenticate, send_put_request, endpoint, product, valid_data
+    ):
+        authenticate(is_staff=True)
+        response = send_put_request(f"{endpoint}{product.id}/", valid_data)
+        assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
 class TestDeleteProduct:
     """Testcases of product endpoint while deleting product"""
 

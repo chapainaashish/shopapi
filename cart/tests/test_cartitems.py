@@ -35,7 +35,7 @@ def invalid_data(product):
 class TestCreateCartItems:
     """Testcases  of cart item endpoint while creating cart item"""
 
-    def test_user_is_anonymous_returns_400(
+    def test_user_is_anonymous_returns_401(
         self, send_post_request, endpoint, valid_data
     ):
         response = send_post_request(endpoint, valid_data)
@@ -67,7 +67,7 @@ class TestCreateCartItems:
 class TestRetrieveReview:
     """Testcases  of cart item endpoint while retrieving cart item"""
 
-    def test_user_is_anonymous_returns_404(self, api_client, endpoint, cart_item):
+    def test_user_is_anonymous_returns_401(self, api_client, endpoint, cart_item):
         response = api_client.get(f"{endpoint}{cart_item.id}/")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
@@ -170,7 +170,7 @@ class TestDeleteCartItem:
         response = send_delete_request(f"{endpoint}{cart_item.id}/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_user_is_authenticated_and_authorized(
+    def test_user_is_authenticated_and_authorized_returns_200(
         self,
         request_authenticate,
         send_delete_request,

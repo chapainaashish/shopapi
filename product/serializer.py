@@ -4,7 +4,7 @@ from .models import Category, Product, ProductImage, Review
 
 
 class ReadReviewSerializer(serializers.ModelSerializer):
-    """Serializer class of Review model for reading [GET]"""
+    """Serializer class of Review model for reading review [GET]"""
 
     class Meta:
         model = Review
@@ -13,24 +13,8 @@ class ReadReviewSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
 
 
-class ProductImageSerializer(serializers.ModelSerializer):
-    """Serializer class of ProductImage model [*]"""
-
-    class Meta:
-        model = ProductImage
-        fields = ["id", "image"]
-
-    id = serializers.ReadOnlyField()
-
-    def create(self, validated_data):
-        """Overriding to associate image with related product"""
-        return ProductImage.objects.create(
-            product_id=self.context["product_pk"], **validated_data
-        )
-
-
 class WriteReviewSerializer(serializers.ModelSerializer):
-    """Serializer class of Review model for writing [POST, PATCH]"""
+    """Serializer class of Review model for writing review [POST, PATCH]"""
 
     class Meta:
         model = Review
@@ -39,7 +23,7 @@ class WriteReviewSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
 
     def validate(self, attrs):
-        """Overriding to check if user has already reviewed the product or not"""
+        """Overriding to check if the product exists and  user has already reviewed the product or not"""
 
         product_pk = self.context["product_pk"]
         user = self.context["user"]
@@ -49,7 +33,7 @@ class WriteReviewSerializer(serializers.ModelSerializer):
         if not product.exists():
             raise serializers.ValidationError({"error": "Product doesn't exist"})
 
-        # checking if user has already reviewed the product
+        # checking if user has already reviewed the product or not
         review_exists = Review.objects.filter(user=user, product_id=product_pk).exists()
         if self.context["request"].method == "POST" and review_exists:
             raise serializers.ValidationError(
@@ -70,8 +54,24 @@ class WriteReviewSerializer(serializers.ModelSerializer):
         )
 
 
+class ProductImageSerializer(serializers.ModelSerializer):
+    """Serializer class of ProductImage model [*]"""
+
+    class Meta:
+        model = ProductImage
+        fields = ["id", "image"]
+
+    id = serializers.ReadOnlyField()
+
+    def create(self, validated_data):
+        """Overriding to associate image with related product"""
+        return ProductImage.objects.create(
+            product_id=self.context["product_pk"], **validated_data
+        )
+
+
 class ReadProductSerializer(serializers.ModelSerializer):
-    """Serializer class of Product model for reading [GET]"""
+    """Serializer class of Product model for reading product [GET]"""
 
     class Meta:
         model = Product
@@ -90,14 +90,13 @@ class ReadProductSerializer(serializers.ModelSerializer):
             "reviews",
         ]
 
-    # for nested relationship
-    reviews = ReadReviewSerializer(many=True, read_only=True)
     category = serializers.StringRelatedField()
     images = ProductImageSerializer(many=True, read_only=True)
+    reviews = ReadReviewSerializer(many=True, read_only=True)
 
 
 class WriteProductSerializer(serializers.ModelSerializer):
-    """Serializer class of Product model for writing [POST, PUT, PATCH]"""
+    """Serializer class of Product model for writing product [POST, PUT, PATCH]"""
 
     class Meta:
         model = Product

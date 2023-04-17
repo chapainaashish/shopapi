@@ -12,9 +12,9 @@ class Category(models.Model):
 
     Attributes:
         name (str): name of the category
-        description (str, optional): description of the category.
-        created_at (date): date when category was created.
-        updated_at (date): date when category was last updated.
+        description (str): description of the category
+        created_at (date): date when category was created
+        updated_at (date): date when category was last updated
     """
 
     name = models.CharField(max_length=255, help_text="Enter the category name")
@@ -32,6 +32,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ("-created_at",)
 
 
 class Product(models.Model):
@@ -41,8 +42,8 @@ class Product(models.Model):
     Attributes:
         upc (str): 12 character unique product code
         name (str): name of the product
-        description (str, optional): description of the product
-        price (Decimal): price of the product
+        description (str): description of the product
+        price (decimal): price of the product
         quantity (int): quantity of the product in stock
         category (Category):  category to which the product belongs
         created_at (date): date when the product was created
@@ -71,15 +72,24 @@ class Product(models.Model):
     updated_at = models.DateField(auto_now=True)
 
     def save(self, *args, **kwargs) -> None:
-        """Override the default save method to generate a unique UPC code"""
+        """Override the default save method to generate a unique UPC code for product"""
         self.upc = generate_upc()
         super(Product, self).save(*args, **kwargs)
 
     def average_rating(self):
+        """Return average rating of a product"""
         return self.reviews.aggregate(rating=Avg("rating")).get("rating")
 
     def __str__(self) -> str:
         return str(self.name)
+
+    class Meta:
+        ordering = ("-created_at",)
+
+
+def product_image_path(instance, filename):
+    """To save product image"""
+    return f"product/images/{instance.name}/{filename}"
 
 
 class ProductImage(models.Model):
@@ -89,16 +99,21 @@ class ProductImage(models.Model):
     Attributes:
         product (Product): product that is associated with image
         image (Image): image of the product
+        created_at (Date): date when the image is uploaded
     """
 
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="images"
     )
     image = models.ImageField(
-        upload_to="product/images",
+        upload_to=product_image_path,
         help_text="Enter the product image",
         blank=True,
     )
+    created_at = models.DateField(auto_now_add=True)
+
+    class Meta:
+        ordering = ("-created_at",)
 
 
 class Review(models.Model):
@@ -111,7 +126,7 @@ class Review(models.Model):
         description (str): description of the review
         created_at (datetime): date and time when the review was created
         updated_at (datetime): date and time when the review was last updated
-        rating (int): rating given by the user to the product, between 1 and 5
+        rating (int): rating given by the user to the product between 1 and 5
     """
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -127,7 +142,8 @@ class Review(models.Model):
     )
 
     def __str__(self) -> str:
-        return str(self.description)
+        return f"{str(self.product)}_{str(self.user)}"
 
     class Meta:
         unique_together = ("user", "product")
+        ordering = ("-created_at",)

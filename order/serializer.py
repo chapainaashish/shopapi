@@ -22,7 +22,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class ReadOrderSerializer(serializers.ModelSerializer):
-    """Serializer class  for Order model [GET]"""
+    """Serializer class of Order model for reading order [GET]"""
 
     class Meta:
         model = Order
@@ -47,7 +47,7 @@ class ReadOrderSerializer(serializers.ModelSerializer):
 
 
 class UpdateOrderSerializer(serializers.ModelSerializer):
-    """Serializer for Order model [PATCH]"""
+    """Serializer class of Order model for updating order [PATCH]"""
 
     class Meta:
         model = Order
@@ -55,7 +55,7 @@ class UpdateOrderSerializer(serializers.ModelSerializer):
 
 
 class WriteOrderSerializer(serializers.Serializer):
-    """Serializer class for Order model [POST]"""
+    """Serializer class for Order model for writing order [POST]"""
 
     cart_id = serializers.IntegerField()
     billing_address = serializers.PrimaryKeyRelatedField(
@@ -87,7 +87,7 @@ class WriteOrderSerializer(serializers.Serializer):
         return attrs
 
     def save(self, **kwargs):
-        """Create an order from the cart"""
+        """Create an order of the user from the submitted cart"""
 
         #  current user and his/her cart id
         user = self.context.get("user")

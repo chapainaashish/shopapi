@@ -10,9 +10,9 @@ class Cart(models.Model):
     A model to represent a user's cart
 
     Attributes:
-        user (User): The user who owns the cart
-        created_at (DateTimeField): The date and time when the cart was created
-        updated_at (DateTimeField): The date and time when the cart was last updated
+        user (User): user who owns the cart
+        created_at (DateTimeField): date and time when the cart was created
+        updated_at (DateTimeField): date and time when the cart was last updated
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -21,19 +21,21 @@ class Cart(models.Model):
 
     def total_price(self):
         """Return total cart price"""
-
         return sum([item.quantity * item.product.price for item in self.items.all()])
 
     def __str__(self) -> str:
-        return str(self.user) + str(self.created_at)
+        return f"{str(self.user)}_{str(self.created_at)}"
+
+    class Meta:
+        ordering = ("-created_at",)
 
 
 class CartItem(models.Model):
     """
-    A model to represent item in cart
+    A model to represent items in a cart
 
     Attributes:
-    cart (Cart): associated cart with item
+    cart (Cart): associated cart of item
     product (Product): product that is added to the cart
     quantity (int): product quantity
     """
@@ -58,8 +60,8 @@ class CartItem(models.Model):
         """Return cart item total price"""
         return self.product.price * self.quantity
 
+    def __str__(self) -> str:
+        return f"{str(self.cart)}_{str(self.product)}"
+
     class Meta:
         unique_together = ("cart", "product")
-
-    def __str__(self) -> str:
-        return str(self.cart) + str(self.product)

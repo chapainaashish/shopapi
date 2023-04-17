@@ -7,7 +7,7 @@ from .serializers import CartItemSerializer, CartSerializer, UpdateCartItemSeria
 
 
 class CartViewset(ModelViewSet):
-    """Viewset for Cart model"""
+    """A viewset for Cart model"""
 
     http_method_names = ["get", "post", "delete"]
     serializer_class = CartSerializer
@@ -28,7 +28,7 @@ class CartViewset(ModelViewSet):
 
 
 class CartItemViewset(ModelViewSet):
-    """Viewset for CartItem model"""
+    """A viewset for CartItem model"""
 
     http_method_names = ["get", "post", "patch", "delete"]
     permission_classes = [IsAuthenticated, IsAuthorized]
@@ -49,7 +49,7 @@ class CartItemViewset(ModelViewSet):
         }
 
     def get_serializer_class(self):
-        """Return serializer class based on HTTP request method"""
+        """Overriding to return serializer class based on HTTP method"""
         if self.request.method == "PATCH":
             return UpdateCartItemSerializer
         return CartItemSerializer

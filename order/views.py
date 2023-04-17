@@ -16,7 +16,7 @@ from .serializer import (
 
 
 class OrderItemViewset(ModelViewSet):
-    """Viewset for OrderItem model"""
+    """A viewset for OrderItem model"""
 
     serializer_class = OrderItemSerializer
     http_method_names = ["get", "delete"]
@@ -24,6 +24,8 @@ class OrderItemViewset(ModelViewSet):
     pagination_class = DefaultPagination
 
     def get_queryset(self):
+        """Overriding to return user specific order"""
+
         if self.request.user.is_staff:
             return OrderItem.objects.prefetch_related("product").filter(
                 order=self.kwargs["order_pk"]
@@ -34,7 +36,7 @@ class OrderItemViewset(ModelViewSet):
 
 
 class OrderViewset(ModelViewSet):
-    """Viewset for Order model"""
+    """A viewset for Order model"""
 
     permission_classes = [NormalUserPermission, IsAuthenticated]
     http_method_names = ["get", "post", "patch", "delete"]
@@ -43,11 +45,11 @@ class OrderViewset(ModelViewSet):
     pagination_class = DefaultPagination
 
     def get_serializer_context(self):
-        """Returns current logged in user"""
+        """Overriding to return requested user"""
         return {"user": self.request.user}
 
     def get_queryset(self):
-        """Return user orders"""
+        """Overriding to return user specific order"""
         queryset = (
             Order.objects.select_related("user")
             .select_related("payment")
@@ -64,13 +66,12 @@ class OrderViewset(ModelViewSet):
         return queryset.filter(user=self.request.user).all()
 
     def get_serializer_class(self):
-        """Return serializer class based on request"""
+        """Overriding to return serializer class based on HTTP method"""
 
         if self.request.method == "POST":
             return WriteOrderSerializer
 
-        elif self.request.method == "PATCH":
+        if self.request.method == "PATCH":
             return UpdateOrderSerializer
 
-        else:
-            return ReadOrderSerializer
+        return ReadOrderSerializer

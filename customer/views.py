@@ -6,7 +6,7 @@ from .serializer import ProfileSerializer, ReadAddressSerializer, WriteAddressSe
 
 
 class ProfileViewset(ModelViewSet):
-    """Viewset for user Profile model"""
+    """A viewset for User Profile model"""
 
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
@@ -24,7 +24,7 @@ class ProfileViewset(ModelViewSet):
 
 
 class AddressViewset(ModelViewSet):
-    """Viewset for user Address model"""
+    """A viewset for User Address model"""
 
     permission_classes = [IsAuthenticated]
     http_method_names = ["get", "post", "patch", "delete"]
@@ -39,7 +39,7 @@ class AddressViewset(ModelViewSet):
         return {"user": self.request.user}
 
     def get_serializer_class(self):
-        """Returning serializer class based on HTTP request method"""
+        """Overriding to return serializer class based on HTTP method"""
         if self.request.method == "GET":
             return ReadAddressSerializer
         return WriteAddressSerializer

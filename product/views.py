@@ -37,7 +37,7 @@ class ProductViewset(ModelViewSet):
     pagination_class = DefaultPagination
 
     def get_serializer_class(self):
-        """Overriding to return serializer class based on HTTP request method"""
+        """Overriding to return serializer class based on HTTP method"""
         if self.request.method == "GET":
             return ReadProductSerializer
         return WriteProductSerializer
@@ -51,7 +51,6 @@ class ProductImageViewset(ModelViewSet):
 
     def get_queryset(self):
         """Overriding for getting product specific images"""
-
         return ProductImage.objects.filter(product=self.kwargs["product_pk"])
 
     def get_serializer_context(self):
@@ -97,7 +96,7 @@ class ReviewViewset(ModelViewSet):
         }
 
     def get_serializer_class(self):
-        """Overriding to return serializer class based on HTTP request method"""
+        """Overriding to return serializer class based on HTTP method"""
         if self.request.method == "GET":
             return ReadReviewSerializer
         return WriteReviewSerializer

@@ -27,7 +27,7 @@ class TestCreateCategory:
         response = send_post_request(endpoint, valid_data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_not_admin_returns_401(
+    def test_user_is_authenticated_but_not_admin_returns_403(
         self, authenticate, send_post_request, endpoint, valid_data
     ):
         authenticate()
@@ -72,7 +72,7 @@ class TestPatchCategory:
         response = send_patch_request(f"{endpoint}{category.id}/", valid_data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_not_admin_returns_401(
+    def test_user_is_authenticated_but_not_admin_returns_403(
         self, authenticate, send_patch_request, endpoint, category, valid_data
     ):
         authenticate()
@@ -91,7 +91,7 @@ class TestPatchCategory:
         response = send_patch_request(f"{endpoint}{category.id}/", invalid_data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_user_is_admin_and_data_valid_returns_201(
+    def test_user_is_admin_and_data_valid_returns_200(
         self, authenticate, send_patch_request, endpoint, category, valid_data
     ):
         authenticate(is_staff=True)
@@ -101,7 +101,7 @@ class TestPatchCategory:
 
 @pytest.mark.django_db
 class TestPutCategory:
-    """Testcases of category endpoint while updating(PUT) category"""
+    """Testcases of category endpoint while updating (PUT) category"""
 
     def test_user_is_anonymous_returns_401(
         self, send_put_request, endpoint, category, valid_data
@@ -109,7 +109,7 @@ class TestPutCategory:
         response = send_put_request(f"{endpoint}{category.id}/", valid_data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_not_admin_returns_401(
+    def test_user_is_authenticated_but_not_admin_returns_403(
         self, authenticate, send_put_request, endpoint, category, valid_data
     ):
         authenticate()
@@ -128,7 +128,7 @@ class TestPutCategory:
         response = send_put_request(f"{endpoint}{category.id}/", invalid_data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_user_is_admin_and_data_valid_returns_201(
+    def test_user_is_admin_and_data_valid_returns_200(
         self, authenticate, send_put_request, endpoint, category, valid_data
     ):
         authenticate(is_staff=True)
@@ -146,7 +146,7 @@ class TestDeleteCategory:
         response = send_delete_request(f"{endpoint}{category.id}/")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_not_admin_returns_401(
+    def test_user_is_authenticated_but_not_admin_returns_403(
         self, authenticate, send_delete_request, endpoint, category
     ):
         authenticate()

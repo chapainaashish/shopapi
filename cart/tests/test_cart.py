@@ -15,7 +15,7 @@ class TestCreateCart:
         response = send_post_request(endpoint, {})
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_cart_already_exists_returns_403(
+    def test_user_cart_already_exists_returns_400(
         self, send_post_request, request_authenticate, endpoint, user
     ):
         request_authenticate(user)
@@ -64,13 +64,13 @@ class TestDeleteCart:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_user_is_authenticated_but_unauthorized_returns_404(
-        self, authenticate, cart, user, endpoint, send_delete_request
+        self, authenticate, cart, endpoint, send_delete_request
     ):
         authenticate()
         response = send_delete_request(f"{endpoint}{cart.id}/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
-    def test_user_is_authenticated_and_authorized_returns_200(
+    def test_user_is_authenticated_and_authorized_returns_204(
         self, request_authenticate, cart, user, endpoint, send_delete_request
     ):
         request_authenticate(user)

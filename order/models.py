@@ -12,8 +12,8 @@ class Order(models.Model):
 
     Attributes:
         user (User): user who placed the order
-        billing_address(Address): user address that is where bill sent
-        shipping_address(Address): user address that is where order is shipped
+        billing_address(Address): billing address of the order
+        shipping_address(Address): shipping address of the order
         created_at (datetime): date and time when the order was created
         updated_at (datetime): date and time when the order was last updated
         delivery (char): status of the order delivery, can be one of:
@@ -34,10 +34,10 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     billing_address = models.ForeignKey(
-        Address, on_delete=models.PROTECT, related_name="billing_order"
+        Address, on_delete=models.PROTECT, related_name="billed_orders"
     )
     shipping_address = models.ForeignKey(
-        Address, on_delete=models.PROTECT, related_name="shipping_order"
+        Address, on_delete=models.PROTECT, related_name="shipped_orders"
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -50,7 +50,10 @@ class Order(models.Model):
         return sum([item.quantity * item.product.price for item in self.items.all()])
 
     def __str__(self) -> str:
-        return str(self.user) + str(self.created_at)
+        return f"{str(self.user)}_{str(self.created_at)}"
+
+    class Meta:
+        ordering = ("-created_at",)
 
 
 class OrderItem(models.Model):
@@ -58,10 +61,10 @@ class OrderItem(models.Model):
     A model to represent an item in an order
 
     Attributes:
-        order (Order): order this item belongs to
-        product (Product): product being ordered
+        order (Order): associated order of an item
+        product (Product): product that is being ordered
         ordered_price (decimal): price of the product when it was ordered
-        quantity (int): quantity of the product being ordered
+        quantity (int): quantity of the product that is being ordered
     """
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
@@ -82,4 +85,7 @@ class OrderItem(models.Model):
         return self.ordered_price * self.quantity
 
     def __str__(self) -> str:
-        return str(self.order)
+        return f"{str(self.order)}_{str(self.product)}"
+
+    class Meta:
+        ordering = ("-quantity",)

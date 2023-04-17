@@ -17,13 +17,13 @@ def order_item(order):
 
 @pytest.mark.django_db
 class TestRetrieveOrderItem:
-    """Testcases  of order item endpoint while retrieving order item"""
+    """Testcases of order item endpoint while retrieving order item"""
 
-    def test_user_is_anonymous_returns_404(self, api_client, endpoint, order_item):
+    def test_user_is_anonymous_returns_401(self, api_client, endpoint, order_item):
         response = api_client.get(f"{endpoint}{order_item.id}/")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_unauthorized_returns_200(
+    def test_user_is_authenticated_but_unauthorized_returns_404(
         self, api_client, authenticate, endpoint, order_item
     ):
         authenticate()
@@ -49,13 +49,13 @@ class TestRetrieveOrderItem:
 class TestDeleteOrderItem:
     """Testcases of order item endpoint while deleting order item"""
 
-    def test_user_is_anonymous_returns_404(
+    def test_user_is_anonymous_returns_401(
         self, send_delete_request, endpoint, order_item
     ):
         response = send_delete_request(f"{endpoint}{order_item.id}/")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_not_admin_returns_404(
+    def test_user_is_not_admin_returns_403(
         self, send_delete_request, authenticate, endpoint, order_item
     ):
         authenticate()

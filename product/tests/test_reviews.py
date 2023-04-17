@@ -35,7 +35,7 @@ class TestCreateReview:
         response = send_post_request(endpoint, valid_data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
-    def test_user_is_authenticated_but_data_invalid_returns_401(
+    def test_user_is_authenticated_but_data_invalid_returns_400(
         self, request_authenticate, send_post_request, endpoint, invalid_data, user
     ):
         request_authenticate(user)
@@ -131,7 +131,7 @@ class TestDeleteProduct:
         response = send_delete_request(f"{endpoint}{review.id}/")
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_user_is_authenticated_and_authorized_returns_201(
+    def test_user_is_authenticated_and_authorized_returns_204(
         self,
         request_authenticate,
         send_delete_request,

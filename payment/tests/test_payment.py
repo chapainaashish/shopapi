@@ -103,7 +103,7 @@ class TestDeletePayment:
         response = send_delete_request(f"{endpoint}{payment.pk}/")
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
-    def test_user_is_authenticated_and_admin_returns_200(
+    def test_user_is_authenticated_and_admin_returns_204(
         self,
         authenticate,
         send_delete_request,

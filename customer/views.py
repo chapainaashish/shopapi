@@ -20,6 +20,7 @@ class ProfileViewset(ModelViewSet):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
     permission_classes = [IsAuthenticated]
+    http_method_names = ["get", "post", "patch"]
 
     def get_queryset(self):
         """Overriding for getting current user profile"""
@@ -28,13 +29,14 @@ class ProfileViewset(ModelViewSet):
 
     def get_serializer_context(self):
         """Overriding for returning requested user"""
-        return {"user": self.request.user}
+        return {"user": self.request.user, "request_method": self.request.method}
 
 
 class AddressViewset(ModelViewSet):
     """Viewset for user Address model"""
 
     permission_classes = [IsAuthenticated]
+    http_method_names = ["get", "post", "patch", "delete"]
 
     def get_queryset(self):
         """Overriding for getting current user address"""

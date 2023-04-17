@@ -19,6 +19,8 @@ class Profile(models.Model):
         upload_to="customer/images",
         default="customer/images/default.jpg",
         help_text="Enter your image",
+        null=True,
+        blank=True,
     )
     phone = PhoneNumberField(help_text="Enter your phone number")
 

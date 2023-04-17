@@ -21,6 +21,7 @@ class TestCreateCart:
         request_authenticate(user)
         first_response = send_post_request(endpoint, {})
         second_response = send_post_request(endpoint, {})
+        assert first_response.status_code == status.HTTP_201_CREATED
         assert second_response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_user_is_authenticated_and_cart_not_exists_returns_201(

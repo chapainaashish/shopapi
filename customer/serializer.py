@@ -14,7 +14,10 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         """Override to validate one user can have only one profile"""
-        if Profile.objects.filter(user=self.context["user"]).exists():
+        if (
+            Profile.objects.filter(user=self.context["user"]).exists()
+            and self.context["request_method"] == "POST"
+        ):
             raise serializers.ValidationError({"error": "You already have a profile"})
         return attrs
 

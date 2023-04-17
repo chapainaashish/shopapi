@@ -2,12 +2,13 @@ import pytest
 from model_bakery import baker
 from rest_framework import status
 
-from order.models import Order, Payment
+from order.models import Order
+from payment.models import Payment
 
 
 @pytest.fixture
 def endpoint():
-    return "/user/payment/"
+    return "/store/payment/"
 
 
 @pytest.fixture

@@ -20,16 +20,6 @@ class OrderItemSerializer(serializers.ModelSerializer):
     product = serializers.StringRelatedField()
 
 
-class PaymentSerializer(serializers.ModelSerializer):
-    """Serializer class of Payment model[*]"""
-
-    class Meta:
-        model = Payment
-        fields = ["order_id", "status", "updated_at"]
-
-    order_id = serializers.ReadOnlyField(source="order.id")
-
-
 class ReadOrderSerializer(serializers.ModelSerializer):
     """Serializer class  for Order model [GET]"""
 

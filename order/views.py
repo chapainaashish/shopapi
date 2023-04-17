@@ -1,16 +1,14 @@
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from backends.pagination import DefaultPagination
 from backends.permission import IsAdminOrReadOnly
 
-from .models import Order, OrderItem, Payment
-from .permission import NormalUserPermission
+from .models import Order, OrderItem
+from .permission import IsAuthorOrNone, NormalUserPermission
 from .serializer import (
     OrderItemSerializer,
-    PaymentSerializer,
     ReadOrderSerializer,
     UpdateOrderSerializer,
     WriteOrderSerializer,
@@ -22,7 +20,7 @@ class OrderItemViewset(ModelViewSet):
 
     serializer_class = OrderItemSerializer
     http_method_names = ["get", "delete"]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAuthorOrNone, IsAdminOrReadOnly]
     pagination_class = DefaultPagination
 
     def get_queryset(self):
@@ -76,11 +74,3 @@ class OrderViewset(ModelViewSet):
 
         else:
             return ReadOrderSerializer
-
-
-class PaymentView(RetrieveUpdateAPIView):
-    """Viewset for Payment model"""
-
-    permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
-    queryset = Payment.objects.all()
-    serializer_class = PaymentSerializer

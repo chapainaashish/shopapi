@@ -60,6 +60,22 @@ class TestCreateProfile:
 
 
 @pytest.mark.django_db
+class TestRetrieveProfile:
+    """Testcases of profile endpoint while retrieving profile"""
+
+    def test_user_is_anonymous_returns_401(self, api_client, endpoint):
+        response = api_client.get(endpoint)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_user_is_authenticated_returns_200(
+        self, authenticate, endpoint, api_client
+    ):
+        authenticate()
+        response = api_client.get(endpoint)
+        assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
 class TestPatchProfile:
     """Testcases  of profile endpoint while updating [patch] profile"""
 

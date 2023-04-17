@@ -59,6 +59,8 @@ class PaymentViewset(ModelViewSet):
     permission_classes = [IsAuthenticated, IsAdminOrReadOnly]
 
     def get_queryset(self):
+        if self.request.user.is_staff:
+            return Payment.objects.select_related("order").filter()
         return Payment.objects.select_related("order").filter(
             order__user=self.request.user
         )

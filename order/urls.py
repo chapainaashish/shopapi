@@ -14,5 +14,4 @@ orders_router.register("items", views.OrderItemViewset, basename="order-items")
 urlpatterns = [
     path("", include(router.urls)),
     path("", include(orders_router.urls)),
-    path("order/<int:pk>/payment/", views.PaymentView().as_view()),
 ]

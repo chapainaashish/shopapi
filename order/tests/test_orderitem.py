@@ -60,7 +60,7 @@ class TestDeleteOrderItem:
     ):
         authenticate()
         response = send_delete_request(f"{endpoint}{order_item.id}/")
-        assert response.status_code == status.HTTP_404_NOT_FOUND
+        assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_user_is_admin_returns_204(
         self, send_delete_request, authenticate, endpoint, order_item

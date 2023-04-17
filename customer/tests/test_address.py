@@ -65,6 +65,22 @@ class TestCreateAddress:
 
 
 @pytest.mark.django_db
+class TestRetrieveAddress:
+    """Testcases of address endpoint while retrieving address"""
+
+    def test_user_is_anonymous_returns_401(self, api_client, endpoint):
+        response = api_client.get(endpoint)
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_user_is_authenticated_returns_200(
+        self, authenticate, endpoint, api_client
+    ):
+        authenticate()
+        response = api_client.get(endpoint)
+        assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
 class TestPatchAddress:
     """Testcases  of address endpoint while updating [patch] address"""
 

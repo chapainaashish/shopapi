@@ -6,6 +6,4 @@ from . import views
 router = DefaultRouter()
 router.register(prefix="payment", viewset=views.PaymentViewset, basename="order")
 
-urlpatterns = [
-    path("", include(router.urls)),
-]
+urlpatterns = router.urls

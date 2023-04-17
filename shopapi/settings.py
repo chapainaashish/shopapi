@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "djoser",
     "django_filters",
     "debug_toolbar",
+    "drf_spectacular",
     "customer",
     "product",
     "order",
@@ -131,5 +132,6 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 SIMPLE_JWT = {"AUTH_HEADER_TYPES": ("JWT",), "ACCESS_TOKEN_LIFETIME": timedelta(days=1)}

@@ -34,10 +34,16 @@ class Payment(models.Model):
         max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING
     )
 
+    # def amount(self):
+    #     """Return total sum payment"""
+    #     return self.order.total_price
+
     def amount(self):
         """Return total sum payment"""
-        return self.order.total_price
-    
+        return sum(
+            [item.quantity * item.product.price for item in self.order.items.all()]
+        )
+
     def user(self):
         """Return payment user"""
         return self.order.user

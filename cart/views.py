@@ -2,7 +2,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Cart, CartItem
-from .permission import IsAuthorized
+from .permission import IsCartOwner
 from .serializers import CartItemSerializer, CartSerializer, UpdateCartItemSerializer
 
 
@@ -31,7 +31,7 @@ class CartItemViewset(ModelViewSet):
     """A viewset for CartItem model"""
 
     http_method_names = ["get", "post", "patch", "delete"]
-    permission_classes = [IsAuthenticated, IsAuthorized]
+    permission_classes = [IsCartOwner]
 
     def get_queryset(self):
         """Overriding to load only cart specific items"""

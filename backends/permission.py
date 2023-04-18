@@ -3,7 +3,7 @@ from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 class IsAdminOrReadOnly(BasePermission):
     """
-    Custom permission to only allow safe methods or requested user is admin
+    Custom permission to only allow safe methods to normal user
     """
 
     def has_permission(self, request, view):

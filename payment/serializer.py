@@ -8,7 +8,7 @@ class ReadPaymentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Payment
-        fields = ["order_id", "user", "amount", "status", "created_at", "updated_at"]
+        fields = ["order_id", "amount", "status", "created_at", "updated_at"]
 
     order_id = serializers.IntegerField(source="order.id")
     created_at = serializers.StringRelatedField(source="order.created_at")

@@ -1,9 +1,9 @@
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import IsAuthenticated
 
 
-class IsAuthorized(BasePermission):
+class IsCartOwner(IsAuthenticated):
     """
-    Custom permission to only allow view cart if requested user is authorized user
+    Custom permission to only allow the owner of a cart to access it
     """
 
     def has_object_permission(self, request, view, obj):

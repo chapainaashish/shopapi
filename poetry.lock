@@ -1221,6 +1221,21 @@ files = [
 ]
 
 [[package]]
+name = "stripe"
+version = "5.4.0"
+description = "Python bindings for the Stripe API"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
+    {file = "stripe-5.4.0-py2.py3-none-any.whl", hash = "sha256:57c0da7e3b889b69ff1dbf23ac1ec5e00f665cfba069fdf0f328b83ddf4225df"},
+    {file = "stripe-5.4.0.tar.gz", hash = "sha256:72bda7bf9be7528e1b97a5bbacb0716cdf6a0c9597b13fdbfa364cec3c130713"},
+]
+
+[package.dependencies]
+requests = {version = ">=2.20", markers = "python_version >= \"3.0\""}
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -1328,4 +1343,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "26a747983c75b3d664ac92995b29ef2727894dcd28ea8cc925ec322e9afca898"
+content-hash = "01959bb7b62ebe27237801c656e59b31a25a46b46888deeefd5dcf8f5e5ddf4f"

@@ -21,6 +21,7 @@ django-filter = "^23.1"
 djoser = "^2.1.0"
 djangorestframework-simplejwt = "^5.2.2"
 drf-spectacular = "^0.26.2"
+stripe = "^5.4.0"
 
 
 [tool.poetry.group.dev.dependencies]

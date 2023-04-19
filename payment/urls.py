@@ -11,7 +11,8 @@ custom_urls = [
         "stripe/payment/create-checkout-session/<int:order_id>/",
         views.CreateStripeCheckoutSession.as_view(),
         name="checkout_session",
-    )
+    ),
+    path("webhooks/stripe/", views.StripeWebhookView.as_view(), name="stripe-webhook"),
 ]
 
 urlpatterns = [

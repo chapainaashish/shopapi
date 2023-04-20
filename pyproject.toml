@@ -2,7 +2,7 @@
 name = "shopapi"
 version = "0.1.0"
 description = "REST API for basic e-commerce platform"
-authors = ["Your Name <you@example.com>"]
+authors = ["Aashish Chapain <ashishchapain86@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]

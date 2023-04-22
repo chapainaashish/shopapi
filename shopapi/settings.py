@@ -125,8 +125,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# for transferring decimal field so that it won't changed it to string
-
 REST_FRAMEWORK = {
     "COERCE_DECIMAL_TO_STRING": False,
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -134,6 +132,7 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
@@ -141,9 +140,15 @@ SIMPLE_JWT = {
 
 STRIPE_SECRET_KEY = os.getenv("SECRET_KEY_STRIPE")
 STRIPE_PUBLISHABLE_KEY = os.getenv("PUBLISHABLE_KEY")
-PAYMENT_SUCCESS_URL = os.getenv("PAYMENT_SUCCESS_URL")
-PAYMENT_CANCEL_URL = os.getenv("PAYMENT_CANCEL_URL")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
+PAYMENT_SUCCESS_URL = os.getenv("PAYMENT_SUCCESS_URL")
+PAYMENT_CANCEL_URL = os.getenv("PAYMENT_CANCEL_URL")
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")

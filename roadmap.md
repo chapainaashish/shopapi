@@ -10,7 +10,7 @@ PHASE 1.5
   
 PHASE 2
 - add jwt authentication [done]
-- integrate stripe [pending]
+- integrate stripe [done]
 
 PHASE 3
 - create automated test  [done]
@@ -35,7 +35,7 @@ PHASE 6
 2. do admin has right to change payment status?
 3. revisit permission
 4. do TODO 
-5. do i have to add all() after filter? and what's the difference 
+5. do i have to add all() after filter? and swhat's the difference 
 6. minimizing model viewset with other mixin
 
 

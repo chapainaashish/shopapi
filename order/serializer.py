@@ -115,7 +115,8 @@ class WriteOrderSerializer(serializers.Serializer):
             ]
 
             # updating product quantity after order
-            # TODO bulk update, move this to validate
+            # assuming shopapi supports 'cash on delivery'
+            # you can move this logic to StripeWebhook view instead
             for item in cart_items:
                 product = Product.objects.get(pk=item.product.id)
                 if product.quantity < item.quantity:

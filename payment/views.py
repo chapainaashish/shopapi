@@ -18,7 +18,7 @@ from backends.permission import IsAdminOrReadOnly
 from order.models import Order
 
 from .models import Payment
-from .permission import IsAuthorizedOrNone
+from .permission import IsAuthorizedAndPaymentNotComplete
 from .serializer import ReadPaymentSerializer, WritePaymentSerializer
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ class CreateStripeCheckoutSession(APIView):
     Create and return checkout session ID for order payment of type 'Stripe'
     """
 
-    permission_classes = [IsAuthenticated, IsAuthorizedOrNone]
+    permission_classes = [IsAuthenticated, IsAuthorizedAndPaymentNotComplete]
 
     def post(self, request, *args, **kwargs):
         order = get_object_or_404(Order, id=self.kwargs.get("order_id"))
@@ -99,7 +99,7 @@ class StripeWebhookView(View):
     Stripe webhook view to handle checkout session completed event.
     """
 
-    permission_classes = [IsAuthenticated, IsAuthorizedOrNone]
+    permission_classes = [IsAuthenticated, IsAuthorizedAndPaymentNotComplete]
 
     def post(self, request, format=None):
         payload = request.body

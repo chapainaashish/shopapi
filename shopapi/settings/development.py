@@ -1,6 +1,10 @@
 import os
 
+from dotenv import load_dotenv
+
 from .base import *
+
+load_dotenv()
 
 DEBUG = True
 ALLOWED_HOSTS = []
@@ -70,12 +74,14 @@ LOGGING = {
     },
     "loggers": {
         "": {
-            "handlers": ["file"],
+            "handlers": ["console"],
             "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
         }
     },
     "formatters": {
-        "verbose": {"format": "{asctime} ({levelname})  - {name} - {message}"},
-        "style": "{",
+        "verbose": {
+            "format": "{asctime} ({levelname})  - {name} - {message}",
+            "style": "{",
+        },
     },
 }

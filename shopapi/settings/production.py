@@ -1,6 +1,10 @@
 import os
 
+from dotenv import load_dotenv
+
 from .base import *
+
+load_dotenv()
 
 DEBUG = False
 ALLOWED_HOSTS = ["*"]
@@ -73,7 +77,9 @@ LOGGING = {
         }
     },
     "formatters": {
-        "verbose": {"format": "{asctime} ({levelname})  - {name} - {message}"},
-        "style": "{",
+        "verbose": {
+            "format": "{asctime} ({levelname})  - {name} - {message}",
+            "style": "{",
+        },
     },
 }

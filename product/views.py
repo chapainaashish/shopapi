@@ -26,6 +26,7 @@ class ProductViewset(ModelViewSet):
     queryset = (
         Product.objects.annotate(average_rating=Avg("reviews__rating"))
         .select_related("category")
+        .prefetch_related("images")
         .prefetch_related("reviews")
         .prefetch_related("reviews__user")
     )

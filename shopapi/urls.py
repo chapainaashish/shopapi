@@ -11,6 +11,7 @@ from drf_spectacular.views import (
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
     path("admin/", admin.site.urls),
+    path("silk/", include("silk.urls", namespace="silk")),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/schema/swagger-ui/",

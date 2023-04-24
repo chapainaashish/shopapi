@@ -14,11 +14,11 @@ PHASE 2
 
 PHASE 3
 - create automated test  [done]
-- do performance test
+- do performance test [done]
   
 PHASE 4
 - learn docker [5 days]
-- send user email after order is delivered[using celery]
+- send user email after order is delivered [using celery]
 - use redis for caching
 
 PHASE 5
@@ -27,6 +27,10 @@ PHASE 5
 PHASE 6
 - documentation [swagger, drf spectacular] [done]
 
+
+locust -f directory/file.py
+
+http://localhost:8089/
 
 
 

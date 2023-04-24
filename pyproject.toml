@@ -22,6 +22,10 @@ djoser = "^2.1.0"
 djangorestframework-simplejwt = "^5.2.2"
 drf-spectacular = "^0.26.2"
 stripe = "^5.4.0"
+django-cors-headers = "^3.14.0"
+redis = "^4.5.4"
+celery = "^5.2.7"
+flower = "^1.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -31,6 +35,9 @@ pytest = "^7.3.0"
 pytest-django = "^4.5.2"
 model-bakery = "^1.11.0"
 pytest-watch = "^4.2.0"
+locust = "^2.15.1"
+django-silk = "^5.0.3"
+pytest-cov = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core"]

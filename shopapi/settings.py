@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
+    "silk",
     "rest_framework",
     "djoser",
     "django_filters",
@@ -48,6 +50,8 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "silk.middleware.SilkyMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -152,3 +156,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv("EMAIL_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+
+CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = os.getenv("REDIS_BACKEND")

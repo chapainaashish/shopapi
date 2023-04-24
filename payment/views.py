@@ -1,6 +1,5 @@
 import stripe
 from django.conf import settings
-from django.core.mail import send_mail  # Add this
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -12,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from backends.async_send_mail import send_email_async
 from backends.permission import IsAdminOrReadOnly
 from order.models import Order
 
@@ -107,11 +107,16 @@ class StripeWebhookView(View):
 
             customer_email = session["customer_details"]["email"]
             order_id = session["metadata"]["order_id"]
-            send_mail(
-                subject="Your Order has successfully placed",
-                message=f"Thanks for your purchase. Your order id is {order_id}",
-                recipient_list=[customer_email],
-                from_email="shopapi@gmail.com",
+
+            payment = Payment.objects.get(pk=order_id)
+            payment.status = "C"
+            payment.save()
+
+            send_email_async.delay(
+                to_email=customer_email,
+                subject="Thank you for purchasing",
+                message=f"Your order {order_id} have been placed",
+                from_email="shopapi89@gmail.com",
             )
 
         return HttpResponse(status=200)

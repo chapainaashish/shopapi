@@ -1,3 +1,5 @@
+import logging
+
 import stripe
 from django.conf import settings
 from django.http import HttpResponse
@@ -18,6 +20,8 @@ from order.models import Order
 from .models import Payment
 from .permission import IsAuthorizedOrNone
 from .serializer import ReadPaymentSerializer, WritePaymentSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class PaymentViewset(ModelViewSet):
@@ -70,14 +74,18 @@ class CreateStripeCheckoutSession(APIView):
             }
             order_items.append(data)
 
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=["card"],
-            line_items=order_items,
-            metadata={"order_id": order.id},
-            mode="payment",
-            success_url=settings.PAYMENT_SUCCESS_URL,
-            cancel_url=settings.PAYMENT_CANCEL_URL,
-        )
+        logger.info("Creating Stripe Session")
+        try:
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=["card"],
+                line_items=order_items,
+                metadata={"order_id": order.id},
+                mode="payment",
+                success_url=settings.PAYMENT_SUCCESS_URL,
+                cancel_url=settings.PAYMENT_CANCEL_URL,
+            )
+        except Exception as e:
+            logger.error(f"Stripe Error while creating checkout {e}")
 
         return Response(
             {"sessionId": checkout_session["id"], "url": checkout_session["url"]},
@@ -102,8 +110,10 @@ class StripeWebhookView(View):
         try:
             event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
         except ValueError as e:
+            logger.error(f"Error in stripe webhook while constructing event {e}")
             return HttpResponse(status=400)
         except stripe.error.SignatureVerificationError as e:
+            logger.error(f"Error in stripe webhook while constructing event {e}")
             return HttpResponse(status=400)
 
         if event["type"] == "checkout.session.completed":

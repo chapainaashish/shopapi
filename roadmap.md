@@ -28,20 +28,6 @@ PHASE 6
 - documentation [swagger, drf spectacular] [done]
 
 
-locust -f directory/file.py
-
-http://localhost:8089/
-
-
-
-
-1. return model method as attribute in queryset
-2. do admin has right to change payment status?
-3. revisit permission
-4. do TODO 
-5. minimizing model viewset with other mixin
-
-
 
 
 

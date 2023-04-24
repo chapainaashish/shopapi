@@ -53,6 +53,7 @@ class OrderViewset(ModelViewSet):
         queryset = (
             Order.objects.select_related("user")
             .select_related("payment")
+            .select_related("payment__order")
             .select_related("billing_address")
             .select_related("shipping_address")
             .prefetch_related("items")

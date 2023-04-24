@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.functional import cached_property
 
 from customer.models import Address
 from product.models import Product
@@ -45,6 +46,7 @@ class Order(models.Model):
         max_length=1, choices=DELIVERY_CHOICES, default=DELIVERY_PENDING
     )
 
+    @cached_property
     def total_price(self):
         """Return total order price"""
         return sum([item.quantity * item.product.price for item in self.items.all()])
@@ -80,6 +82,7 @@ class OrderItem(models.Model):
         help_text="Enter the product quantity",
     )
 
+    @cached_property
     def total_price(self):
         """Return order item total price"""
         return self.ordered_price * self.quantity

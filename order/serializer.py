@@ -5,6 +5,7 @@ from cart.models import Cart, CartItem
 from customer.models import Address
 from customer.serializer import ReadAddressSerializer
 from payment.models import Payment
+from payment.serializer import ReadPaymentSerializer
 from product.models import Product
 
 from .models import Order, OrderItem
@@ -40,7 +41,7 @@ class ReadOrderSerializer(serializers.ModelSerializer):
         ]
 
     user = serializers.StringRelatedField()
-    payment = serializers.StringRelatedField()
+    payment = ReadPaymentSerializer()
     items = OrderItemSerializer(many=True)
     billing_address = ReadAddressSerializer()
     shipping_address = ReadAddressSerializer()

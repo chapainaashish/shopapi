@@ -19,7 +19,7 @@ PHASE 3
 PHASE 4
 - learn docker [5 days] [done]
 - send user email after order is delivered [using celery] [done]
-- use redis for caching
+- use redis for caching [done]
 
 PHASE 5
 - deploy
@@ -39,8 +39,7 @@ http://localhost:8089/
 2. do admin has right to change payment status?
 3. revisit permission
 4. do TODO 
-5. do i have to add all() after filter? and swhat's the difference 
-6. minimizing model viewset with other mixin
+5. minimizing model viewset with other mixin
 
 
 

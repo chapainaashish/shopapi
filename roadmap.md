@@ -17,8 +17,8 @@ PHASE 3
 - do performance test [done]
   
 PHASE 4
-- learn docker [5 days]
-- send user email after order is delivered [using celery]
+- learn docker [5 days] [done]
+- send user email after order is delivered [using celery] [done]
 - use redis for caching
 
 PHASE 5

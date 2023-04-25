@@ -8,7 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ["id", "image", "phone"]
+        fields = ["id", "image", "phone", "updated_at"]
 
     def validate(self, attrs):
         """Overriding to validate one user can have only one profile"""

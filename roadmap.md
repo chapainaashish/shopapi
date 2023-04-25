@@ -15,9 +15,11 @@ PHASE 2
 PHASE 3
 - create automated test  [done]
 - do performance test [done]
+- admin panel [pending]
   
 PHASE 4
 - learn docker [5 days] [done]
+- dockermake[pending]
 - send user email after order is delivered [using celery] [done]
 - use redis for caching [done]
 

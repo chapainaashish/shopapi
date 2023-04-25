@@ -24,11 +24,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third party
     "corsheaders",
-    "silk",
+    # "silk",
     "rest_framework",
     "djoser",
     "django_filters",
-    "debug_toolbar",
+    # "debug_toolbar",
     "drf_spectacular",
     # local
     "customer",
@@ -41,11 +41,11 @@ INSTALLED_APPS = [
 
 # you can remove 'silk' and 'debug_toolbar' Middleware
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    "silk.middleware.SilkyMiddleware",
+    # "silk.middleware.SilkyMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",

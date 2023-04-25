@@ -1,6 +1,17 @@
 from django.contrib import admin
 
-from .models import Address, Profile
+from . import models
 
-admin.site.register(Profile)
-admin.site.register(Address)
+
+@admin.register(models.Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ["user", "image", "phone", "updated_at"]
+    search_fields = ["user__username"]
+
+
+@admin.register(models.Address)
+class AddressAdmin(admin.ModelAdmin):
+    list_display = ["user", "house_no", "city", "country", "updated_at"]
+    search_fields = ["user__username"]
+    list_select_related = ["user"]
+    list_filter = ["country"]

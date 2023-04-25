@@ -89,7 +89,7 @@ class Product(models.Model):
 
 def product_image_path(instance, filename):
     """To save product image"""
-    return f"product/images/{instance.name}/{filename}"
+    return f"product/images/{instance.product}/{filename}"
 
 
 class ProductImage(models.Model):
@@ -103,7 +103,10 @@ class ProductImage(models.Model):
     """
 
     product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name="images"
+        Product,
+        on_delete=models.CASCADE,
+        related_name="images",
+        help_text="Select a product",
     )
     image = models.ImageField(
         upload_to=product_image_path,
@@ -111,6 +114,9 @@ class ProductImage(models.Model):
         blank=True,
     )
     created_at = models.DateField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return str(self.product)
 
     class Meta:
         ordering = ("-created_at",)

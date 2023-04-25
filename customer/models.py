@@ -23,6 +23,7 @@ class Profile(models.Model):
         blank=True,
     )
     phone = PhoneNumberField(help_text="Enter your phone number")
+    updated_at = models.DateField(auto_now=True)
 
     def __str__(self) -> str:
         return str(self.user.username)

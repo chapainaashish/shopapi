@@ -4,6 +4,9 @@ from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+admin.site.site_header = "Shopapi"
+admin.site.index_title = "An e-commerce api built in DRF"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
@@ -25,6 +28,6 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
-        path("__debug__/", include("debug_toolbar.urls")),
-        path("silk/", include("silk.urls", namespace="silk")),
+        # path("__debug__/", include("debug_toolbar.urls")),
+        # path("silk/", include("silk.urls", namespace="silk")),
     ]

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.functional import cached_property
 
 from order.models import Order
 
@@ -34,16 +35,14 @@ class Payment(models.Model):
         max_length=1, choices=PAYMENT_CHOICES, default=PAYMENT_PENDING
     )
 
-    # def amount(self):
-    #     """Return total sum payment"""
-    #     return self.order.total_price
-
+    @cached_property
     def amount(self):
         """Return total sum payment"""
         return sum(
             [item.quantity * item.product.price for item in self.order.items.all()]
         )
 
+    @cached_property
     def user(self):
         """Return payment user"""
         return self.order.user

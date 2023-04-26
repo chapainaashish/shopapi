@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  # Postgress
+  db:
+    image: postgres:13
+    restart: always
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_USER=${USER}
+      - POSTGRES_PASSWORD=${PASSWORD}
+      - POSTGRES_DB=${DB}
+  
+  # Redis
+  redis:
+    image: redis:7
+
+  # Django Application
+  web:
+    build: .
+    restart: always
+    command: gunicorn shopapi.wsgi:application --bind 0.0.0.0:8000
+    env_file:
+      - ./.env
+    expose:
+      - 8000
+    volumes:
+      - ./static:/code/static
+      - ./media:/code/media
+    depends_on:
+      - redis
+      - db
+  
+  # Celery 
+  celery:
+    build: .
+    restart: always
+    command: celery -A shopapi worker --loglevel=info
+    volumes:
+      - .:/code
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+      - redis
+      - web
+
+volumes:
+  postgres_data:
+  static:
+  media:

@@ -6,7 +6,7 @@ services:
     image: postgres:13
     restart: always
     volumes:
-      - ./postgres_data:/var/lib/postgresql/data/
+      - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
     environment:
@@ -28,8 +28,8 @@ services:
     expose:
       - 8000
     volumes:
-      - ./static:/code/static
-      - ./media:/code/media
+      - static:/code/static
+      - media:/code/media
     depends_on:
       - redis
       - db

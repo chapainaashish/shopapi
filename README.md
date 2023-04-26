@@ -95,13 +95,18 @@ Docker | Virtualization
 3. Set `DJANGO_SETTINGS_MODULE` according to your need
    - For development: `DJANGO_SETTINGS_MODULE = 'shopapi.settings.development'` 
    - For production : `DJANGO_SETTINGS_MODULE = 'shopapi.settings.production'` 
+       - Set database `HOST` `USER` `PASSWORD` `PORT` in `.env` file for production
+
   
 4. Install docker in your system `https://docs.docker.com/desktop/`
 
-5. Build docker image and run
+5. Rename `docker-compose-dev.yml` to `docker-compose.yml`
+   
+6. Build docker image and run
+   
 ```
 $ docker-compose up
 $ docker-compose exec web python manage.py createsuperuser
 ```
 
-6. Head over to `http://localhost:8000/admin` on your browser
+1. Head over to `http://localhost:8000/admin` on your browser

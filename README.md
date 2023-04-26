@@ -84,6 +84,8 @@ Docker | Virtualization
 18. Run celery flower to manage celery workers `celery flower` *[Optional]*
 
 19. Run the performance test using `locust -f locustfiles/browse_product.py` *[Optional]*
+    
+20. Read the API documentation on `http://127.0.0.1:8000/api/schema/swagger-ui/` *[Optional]*
 
 
 **Docker**
@@ -100,7 +102,8 @@ Docker | Virtualization
   
 4. Install docker in your system `https://docs.docker.com/desktop/`
 
-5. Rename `docker-compose-dev.yml` to `docker-compose.yml`
+
+5. Rename `docker-compose-dev.yml` to `docker-compose.yml` for development [Skip for production]
    
 6. Build docker image and run
    
@@ -109,4 +112,18 @@ $ docker-compose up
 $ docker-compose exec web python manage.py createsuperuser
 ```
 
-1. Head over to `http://localhost:8000/admin` on your browser
+7. Head over to `http://localhost:8000/admin` on your browser
+
+
+## References
+
+- https://docs.djangoproject.com/en/4.1/
+- https://www.django-rest-framework.org/
+- https://python-poetry.org/docs/
+- https://docs.celeryq.dev/en/stable/getting-started/introduction.html
+- https://pytest-django.readthedocs.io/en/latest/tutorial.html
+- https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+- https://djoser.readthedocs.io/en/latest/getting_started.html
+- https://stripe.com/docs/stripe-cli
+- https://docs.docker.com/engine/install/
+- https://drf-spectacular.readthedocs.io/en/latest/

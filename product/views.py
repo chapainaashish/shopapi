@@ -22,7 +22,7 @@ from .serializer import (
 )
 
 
-@method_decorator(cache_page(60 * 15), name="dispatch")
+# @method_decorator(cache_page(60 * 15), name="dispatch")
 class ProductViewset(ModelViewSet):
     """A viewset for Product model"""
 

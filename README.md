@@ -88,6 +88,8 @@ Docker | Virtualization
 20. Read the API documentation on `http://127.0.0.1:8000/api/schema/swagger-ui/` *[Optional]*
 
 
+
+
 **Docker**
 
 1. Clone the project `https://github.com/chapainaashish/shopapi`

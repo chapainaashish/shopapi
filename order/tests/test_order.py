@@ -3,7 +3,7 @@ from model_bakery import baker
 from rest_framework import status
 
 from cart.models import Cart, CartItem
-from customer.models import Address
+from user.models import Address
 
 
 @pytest.fixture

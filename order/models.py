@@ -3,8 +3,8 @@ from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.functional import cached_property
 
-from customer.models import Address
 from product.models import Product
+from user.models import Address
 
 
 class Order(models.Model):

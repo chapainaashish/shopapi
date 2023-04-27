@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
-    path("user/", include("customer.urls")),
+    path("user/", include("user.urls")),
     path("store/", include("product.urls")),
     path("store/", include("cart.urls")),
     path("store/", include("order.urls")),

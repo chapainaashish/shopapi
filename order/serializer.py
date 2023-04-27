@@ -2,11 +2,11 @@ from django.db import transaction
 from rest_framework import serializers
 
 from cart.models import Cart, CartItem
-from customer.models import Address
-from customer.serializer import ReadAddressSerializer
 from payment.models import Payment
 from payment.serializer import ReadPaymentSerializer
 from product.models import Product
+from user.models import Address
+from user.serializer import ReadAddressSerializer
 
 from .models import Order, OrderItem
 

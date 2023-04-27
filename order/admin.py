@@ -21,11 +21,11 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ["delivery"]
 
     def shipping_address_link(self, obj):
-        url = reverse("admin:customer_address_change", args=[obj.shipping_address.pk])
+        url = reverse("admin:user_address_change", args=[obj.shipping_address.pk])
         return mark_safe("<a href='{}'>{}</a>".format(url, obj.shipping_address))
 
     def billing_address_link(self, obj):
-        url = reverse("admin:customer_address_change", args=[obj.billing_address.pk])
+        url = reverse("admin:user_address_change", args=[obj.billing_address.pk])
         return mark_safe("<a href='{}'>{}</a>".format(url, obj.billing_address))
 
     billing_address_link.short_description = "Billing Address"

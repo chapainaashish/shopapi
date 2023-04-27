@@ -2,32 +2,46 @@ import pytest
 from model_bakery import baker
 from rest_framework import status
 
-from customer.models import Profile
+from user.models import Address
 
 
 @pytest.fixture
 def endpoint():
-    return "/user/profile/"
+    return "/user/address/"
 
 
 @pytest.fixture
-def profile(user):
-    return baker.make(Profile, user=user, phone="+12125552368")
+def address(user):
+    return baker.make(Address, user=user, country="GY")
 
 
 @pytest.fixture
 def valid_data(user):
-    return {"phone": "+12125552368", "user": user.id}
+    return {
+        "house_no": "241",
+        "street": "20955 Kuhic Junctions",
+        "city": "Metzborough",
+        "postal_code": "47683-8856",
+        "country": "GY",
+        "user": user.id,
+    }
 
 
 @pytest.fixture
 def invalid_data(user):
-    return {"phone": "d9898s", "user": user.id}
+    return {
+        "house_no": "2.3",
+        "street": "20955 Kuhic Junctions",
+        "city": "slkdfj",
+        "postal_code": "-8856",
+        "country": "jskdsfds",
+        "user": user.id,
+    }
 
 
 @pytest.mark.django_db
-class TestCreateProfile:
-    """Testcases  of profile endpoint while creating profile"""
+class TestCreateAddress:
+    """Testcases  of address endpoint while creating address"""
 
     def test_user_is_anonymous_returns_401(
         self, send_post_request, endpoint, valid_data
@@ -42,15 +56,6 @@ class TestCreateProfile:
         response = send_post_request(endpoint, invalid_data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
-    def test_user_is_authenticated_and_profile_already_exists_returns_400(
-        self, request_authenticate, send_post_request, endpoint, valid_data, user
-    ):
-        request_authenticate(user)
-        first_response = send_post_request(endpoint, valid_data)
-        second_response = send_post_request(endpoint, valid_data)
-        assert first_response.status_code == status.HTTP_201_CREATED
-        assert second_response.status_code == status.HTTP_400_BAD_REQUEST
-
     def test_user_is_authenticated_and_data_valid_returns_201(
         self, request_authenticate, send_post_request, endpoint, valid_data, user
     ):
@@ -60,8 +65,8 @@ class TestCreateProfile:
 
 
 @pytest.mark.django_db
-class TestRetrieveProfile:
-    """Testcases of profile endpoint while retrieving profile"""
+class TestRetrieveAddress:
+    """Testcases of address endpoint while retrieving address"""
 
     def test_user_is_anonymous_returns_401(self, api_client, endpoint):
         response = api_client.get(endpoint)
@@ -76,13 +81,13 @@ class TestRetrieveProfile:
 
 
 @pytest.mark.django_db
-class TestPatchProfile:
-    """Testcases  of profile endpoint while updating [patch] profile"""
+class TestPatchAddress:
+    """Testcases  of address endpoint while updating [patch] address"""
 
     def test_user_is_anonymous_returns_401(
-        self, send_patch_request, endpoint, valid_data, profile
+        self, send_patch_request, endpoint, valid_data, address
     ):
-        response = send_patch_request(f"{endpoint}{profile.id}/", valid_data)
+        response = send_patch_request(f"{endpoint}{address.id}/", valid_data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_user_is_authenticated_but_invalid_data_returns_400(
@@ -92,10 +97,10 @@ class TestPatchProfile:
         endpoint,
         invalid_data,
         user,
-        profile,
+        address,
     ):
         request_authenticate(user)
-        response = send_patch_request(f"{endpoint}{profile.id}/", invalid_data)
+        response = send_patch_request(f"{endpoint}{address.id}/", invalid_data)
         assert response.status_code == status.HTTP_400_BAD_REQUEST
 
     def test_user_is_authenticated_and_valid_data_returns_200(
@@ -105,8 +110,26 @@ class TestPatchProfile:
         endpoint,
         valid_data,
         user,
-        profile,
+        address,
     ):
         request_authenticate(user)
-        response = send_patch_request(f"{endpoint}{profile.id}/", valid_data)
+        response = send_patch_request(f"{endpoint}{address.id}/", valid_data)
         assert response.status_code == status.HTTP_200_OK
+
+
+@pytest.mark.django_db
+class TestDeleteAddress:
+    """Testcases  of address endpoint while deleting address"""
+
+    def test_user_is_anonymous_returns_401(
+        self, send_delete_request, endpoint, address
+    ):
+        response = send_delete_request(f"{endpoint}{address.id}/")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_user_is_authenticated_returns_204(
+        self, send_delete_request, request_authenticate, endpoint, address, user
+    ):
+        request_authenticate(user)
+        response = send_delete_request(f"{endpoint}{address.id}/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT

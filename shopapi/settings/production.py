@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     "django_filters",
     "drf_spectacular",
     # local
-    "customer",
+    "user",
     "product",
     "order",
     "payment",

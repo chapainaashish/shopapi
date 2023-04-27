@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     # "debug_toolbar",
     "drf_spectacular",
     # local
-    "customer",
+    "user",
     "product",
     "order",
     "payment",

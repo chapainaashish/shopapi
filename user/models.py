@@ -16,8 +16,7 @@ class Profile(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(
-        upload_to="customer/images",
-        default="customer/images/default.jpg",
+        upload_to="user/images",
         help_text="Enter your image",
         null=True,
         blank=True,

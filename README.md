@@ -116,7 +116,7 @@ $ docker-compose exec web python manage.py createsuperuser
 7. Head over to `http://localhost:8000/admin` on your browser
 
 
-## Endpoints Design
+## Basic APIs Implementation
 
 
 <table>
@@ -127,13 +127,13 @@ $ docker-compose exec web python manage.py createsuperuser
     </tr>
     <tr>
       <th>Anonymous</th>
-      <th>Authenticated</th>
+      <th>Authenticated+Authorized</th>
       <th>Admin</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td colspan=4 style='text-align:center'>collection</td>
+      <td colspan=4><strong>collection</strong></td>
     </tr>
     <tr>
       <td>store/collection</td>
@@ -148,7 +148,7 @@ $ docker-compose exec web python manage.py createsuperuser
       <td>GET, PUT, PATCH, DELETE</td>
     </tr>
    <tr>
-      <td colspan=4 style='text-align:center'>product</td>
+      <td colspan=4><strong>product</strong></td>
     </tr>
     <tr>
       <td>store/product</td>
@@ -175,7 +175,7 @@ $ docker-compose exec web python manage.py createsuperuser
       <td>GET, PATCH, DELETE</td>
     </tr>
     <tr>
-      <td colspan=4 style='text-align:center'>cart</td>
+      <td colspan=4><strong>cart</strong></td>
     </tr>
     <tr>
       <td>store/cart</td>
@@ -202,7 +202,7 @@ $ docker-compose exec web python manage.py createsuperuser
       <td>GET, PATCH, DELETE</td>
     </tr>
     <tr>
-      <td colspan=4 style='text-align:center'>order</td>
+      <td colspan=4><strong>order</strong></td>
     </tr>
     <tr>
       <td>store/order</td>
@@ -229,7 +229,7 @@ $ docker-compose exec web python manage.py createsuperuser
       <td>GET, DELETE</td>
     </tr>
     <tr>
-      <td colspan=4 style='text-align:center'>payment</td>
+      <td colspan=4><strong>payment</strong></td>
     </tr>
    <tr>
       <td>store/payment</td>
@@ -250,7 +250,7 @@ $ docker-compose exec web python manage.py createsuperuser
       <td>POST</td>
     </tr>
     <tr>
-      <td colspan=4 style='text-align:center'>user</td>
+      <td colspan=4><strong>user</strong></td>
     </tr>
     <tr>
       <td>user/address</td>

@@ -116,7 +116,12 @@ $ docker-compose exec web python manage.py createsuperuser
 7. Head over to `http://localhost:8000/admin` on your browser
 
 
-## Basic APIs Implementation
+## ER Diagram
+<img src='https://raw.githubusercontent.com/chapainaashish/shopapi/main/db.sqlite3.png'>
+
+
+
+## API Endpoints
 
 
 <table>

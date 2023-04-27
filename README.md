@@ -1,6 +1,6 @@
 # Shopapi
 
-An E-commerce API built using Django Rest Framework
+An E-commerce APIs built using Django Rest Framework
 
 ## Features
 
@@ -10,9 +10,9 @@ An E-commerce API built using Django Rest Framework
 - Custom permissions set for necessary endpoints
 - Payment integration using Stripe
 - Customized Admin Panel
-- Caching using Redis
+- Redis caching 
 - Tested API endpoints using pytest
-- Performance test and stress test [on gunicorn]
+- Performed perfomance test [local machine gunicorn webserver]
 - Logged essential external service call
 - Documentation using DRF spectacular
 - Dockerized for local development and production
@@ -91,11 +91,11 @@ Docker | Virtualization
 #### Docker Set up
 
 
-21. Clone the project `https://github.com/chapainaashish/shopapi`
+1. Clone the project `https://github.com/chapainaashish/shopapi`
 
-22. Rename the `.env_example` to `.env` and update the environment variables accordingly
+2. Rename the `.env_example` to `.env` and update the environment variables accordingly
 
-23. Set `DJANGO_SETTINGS_MODULE` according to your need
+3. Set `DJANGO_SETTINGS_MODULE` according to your need
    - For development: `DJANGO_SETTINGS_MODULE = 'shopapi.settings.development'` 
    - For production : `DJANGO_SETTINGS_MODULE = 'shopapi.settings.production'` 
        - Set database `HOST` `USER` `PASSWORD` `PORT` in `.env` file for production

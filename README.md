@@ -90,7 +90,7 @@ Docker | Virtualization
 
 
 
-**Docker**
+**Docker Setup**
 
 1. Clone the project `https://github.com/chapainaashish/shopapi`
 

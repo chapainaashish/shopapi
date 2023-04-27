@@ -61,7 +61,7 @@ class TestCreateProduct:
         assert response.data["id"] > 0
 
 
-# Make sure you have connected with redis (caching) before running this test
+# Make sure you have connected with redis(caching) before running this test
 @pytest.mark.django_db
 class TestRetrieveProduct:
     """Testcases  of product endpoint while retrieving product"""

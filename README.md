@@ -34,7 +34,7 @@ Djoser | User Registration
 Simple-JWT | User Authentication
 Stripe | Payment
 DRF spectacular | Documentation
-Docker | Virtualization
+Docker | Containerization
 
 
 ## How to set up ?

@@ -77,7 +77,7 @@ Docker | Virtualization
 
 15. Head over to `http://localhost:8000/admin` on your browser
    
-16. Run the test using command `pytest` *[Optional]*
+16. Run the test using command `pytest` or `pwt` for continuous testing *[Optional]*
 
 17. Generate test coverage in html using `pytest --cov --cov-report=html` *[Optional]*
 

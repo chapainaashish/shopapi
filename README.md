@@ -88,15 +88,14 @@ Docker | Virtualization
 20. Read the API documentation on `http://127.0.0.1:8000/api/schema/swagger-ui/` *[Optional]*
 
 
+#### Docker Set up
 
 
-**Docker Setup**
+21. Clone the project `https://github.com/chapainaashish/shopapi`
 
-1. Clone the project `https://github.com/chapainaashish/shopapi`
+22. Rename the `.env_example` to `.env` and update the environment variables accordingly
 
-2. Rename the `.env_example` to `.env` and update the environment variables accordingly
-
-3. Set `DJANGO_SETTINGS_MODULE` according to your need
+23. Set `DJANGO_SETTINGS_MODULE` according to your need
    - For development: `DJANGO_SETTINGS_MODULE = 'shopapi.settings.development'` 
    - For production : `DJANGO_SETTINGS_MODULE = 'shopapi.settings.production'` 
        - Set database `HOST` `USER` `PASSWORD` `PORT` in `.env` file for production
@@ -116,6 +115,171 @@ $ docker-compose exec web python manage.py createsuperuser
 
 7. Head over to `http://localhost:8000/admin` on your browser
 
+
+## Endpoints Design
+
+
+<table>
+  <thead>
+   <tr>
+      <th rowspan=2>Endpoints</th>
+      <th colspan=3 style='text-align:center'>User</th>
+    </tr>
+    <tr>
+      <th>Anonymous</th>
+      <th>Authenticated</th>
+      <th>Admin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td colspan=4 style='text-align:center'>collection</td>
+    </tr>
+    <tr>
+      <td>store/collection</td>
+      <td>GET</td>
+      <td>GET</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>store/collection/pk</td>
+      <td>GET</td>
+      <td>GET</td>
+      <td>GET, PUT, PATCH, DELETE</td>
+    </tr>
+   <tr>
+      <td colspan=4 style='text-align:center'>product</td>
+    </tr>
+    <tr>
+      <td>store/product</td>
+      <td>GET</td>
+      <td>GET</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>store/product/pk</td>
+      <td>GET</td>
+      <td>GET</td>
+      <td>GET, PUT, PATCH, DELETE</td>
+    </tr>
+    <tr>
+      <td>store/product/pk/reviews</td>
+      <td>GET</td>
+      <td>GET, POST</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>store/product/pk/reviews/pk</td>
+      <td>GET</td>
+      <td>GET, PATCH, DELETE</td>
+      <td>GET, PATCH, DELETE</td>
+    </tr>
+    <tr>
+      <td colspan=4 style='text-align:center'>cart</td>
+    </tr>
+    <tr>
+      <td>store/cart</td>
+      <td>-</td>
+      <td>GET, POST</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>store/cart/pk</td>
+      <td>-</td>
+      <td>GET</td>
+      <td>GET</td>
+    </tr>
+    <tr>
+      <td>store/cart/pk/items</td>
+      <td>-</td>
+      <td>GET, POST</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>store/cart/pk/items/pk</td>
+      <td>-</td>
+      <td>GET, PATCH, DELETE</td>
+      <td>GET, PATCH, DELETE</td>
+    </tr>
+    <tr>
+      <td colspan=4 style='text-align:center'>order</td>
+    </tr>
+    <tr>
+      <td>store/order</td>
+      <td>-</td>
+      <td>GET, POST</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>store/order/pk</td>
+      <td>-</td>
+      <td>GET</td>
+      <td>GET, PATCH, DELETE</td>
+    </tr>
+    <tr>
+      <td>store/order/pk/items</td>
+      <td>-</td>
+      <td>GET</td>
+      <td>GET</td>
+    </tr>
+    <tr>
+      <td>store/order/pk/items/pk</td>
+      <td>-</td>
+      <td>GET</td>
+      <td>GET, DELETE</td>
+    </tr>
+    <tr>
+      <td colspan=4 style='text-align:center'>payment</td>
+    </tr>
+   <tr>
+      <td>store/payment</td>
+      <td>-</td>
+      <td>GET</td>
+      <td>GET</td>
+    </tr>
+    <tr>
+      <td>store/payment/pk</td>
+      <td>-</td>
+      <td>GET</td>
+      <td>GET, PATCH, DELETE</td>
+    </tr>
+    <tr>
+      <td>stripe/payment/pk</td>
+      <td>-</td>
+      <td>POST</td>
+      <td>POST</td>
+    </tr>
+    <tr>
+      <td colspan=4 style='text-align:center'>user</td>
+    </tr>
+    <tr>
+      <td>user/address</td>
+      <td>-</td>
+      <td>GET, POST</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>user/address/pk</td>
+      <td>-</td>
+      <td>GET, PUT, PATCH, DELETE</td>
+      <td>GET, PUT, PATCH, DELETE</td>
+    </tr>
+    <tr>
+      <td>user/profile</td>
+      <td>-</td>
+      <td>GET, POST</td>
+      <td>GET, POST</td>
+    </tr>
+    <tr>
+      <td>user/profile/pk</td>
+      <td>-</td>
+      <td>GET, PATCH, DELETE</td>
+      <td>GET, PATCH, DELETE</td>
+    </tr>
+
+   </tbody>
+</table>
+   
 
 ## References
 

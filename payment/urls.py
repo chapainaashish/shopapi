@@ -4,11 +4,11 @@ from rest_framework_nested.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register(prefix="payment", viewset=views.PaymentViewset, basename="order")
+router.register(prefix="payment", viewset=views.PaymentViewset, basename="payment")
 
 custom_urls = [
     path(
-        "stripe/payment/create-checkout-session/<int:order_id>/",
+        "stripe/payment/<int:order_id>/",
         views.CreateStripeCheckoutSession.as_view(),
         name="checkout_session",
     ),

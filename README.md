@@ -12,7 +12,8 @@ An E-commerce APIs built using Django Rest Framework
 - Customized Admin Panel
 - Redis caching 
 - Tested API endpoints using pytest
-- Performed perfomance test [local machine gunicorn webserver]
+- Error tracking with Sentry
+- Performed performance test [local machine gunicorn web server]
 - Logged essential external service call
 - Documentation using DRF spectacular
 - Dockerized for local development and production
@@ -25,7 +26,7 @@ An E-commerce APIs built using Django Rest Framework
 | --------- | ----------- |  
 Django Rest Framework | APIs Building
 Poetry | Dependency Management
-PostgresSQL | Database
+PostgreSQL | Database
 Celery | Background Task 
 Redis | Caching
 Pytest | API Testing
@@ -34,10 +35,11 @@ Djoser | User Registration
 Simple-JWT | User Authentication
 Stripe | Payment
 DRF spectacular | Documentation
+Error Tracking | Sentry
 Docker | Containerization
 
 
-## How to set up ?
+## How to set up?
 
 #### Manual Set up 
 
@@ -65,7 +67,7 @@ Docker | Containerization
 
 10. Start the celery worker `celery -A shopapi worker --loglevel=info`
 
-11. Install stripe cli tool on your system `https://stripe.com/docs/stripe-cli#install`
+11. Install the stripe cli tool on your system `https://stripe.com/docs/stripe-cli#install`
 
 12. Configure the webhook `stripe listen --forward-to localhost:8000/store/webhooks/stripe/`
 

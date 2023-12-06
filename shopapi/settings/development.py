@@ -1,6 +1,5 @@
 import os
 
-import sentry_sdk
 from dotenv import load_dotenv
 
 from .base import *
@@ -15,12 +14,6 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-
-sentry_sdk.init(
-    dsn=os.getenv("SENTRY_DSN"),
-    traces_sample_rate=1.0,
-    profiles_sample_rate=1.0,
-)
 
 # you can remove 'silk' and 'debug_toolbar'
 INSTALLED_APPS = [

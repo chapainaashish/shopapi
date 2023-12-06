@@ -53,7 +53,7 @@ class TestCreateReview:
         self, request_authenticate, send_post_request, endpoint, valid_data, user
     ):
         request_authenticate(user)
-        first_response = send_post_request(endpoint, valid_data)
+        send_post_request(endpoint, valid_data)
         second_response = send_post_request(endpoint, valid_data)
 
         assert second_response.status_code == status.HTTP_400_BAD_REQUEST

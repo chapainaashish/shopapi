@@ -1,5 +1,6 @@
 import os
 
+import sentry_sdk
 from dotenv import load_dotenv
 
 from .base import *
@@ -14,6 +15,13 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
+
+sentry_sdk.init(
+    dsn=os.getenv("SENTRY_DSN"),
+    traces_sample_rate=1.0,
+    profiles_sample_rate=1.0,
+)
+
 # you can remove 'silk' and 'debug_toolbar'
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -24,11 +32,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # third party
     "corsheaders",
-    # "silk",
+    "silk",
     "rest_framework",
     "djoser",
     "django_filters",
-    # "debug_toolbar",
+    "debug_toolbar",
     "drf_spectacular",
     # local
     "user",
@@ -41,11 +49,11 @@ INSTALLED_APPS = [
 
 # you can remove 'silk' and 'debug_toolbar' Middleware
 MIDDLEWARE = [
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
-    # "silk.middleware.SilkyMiddleware",
+    "silk.middleware.SilkyMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",

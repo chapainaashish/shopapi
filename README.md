@@ -57,35 +57,35 @@ Docker | Containerization
    - For production : `DJANGO_SETTINGS_MODULE = 'shopapi.settings.production'` 
       - Set database `HOST` `USER` `PASSWORD` `PORT` in `.env` file for production
 
-  
+7. Install sentry-sdk `pip install --upgrade 'sentry-sdk[django]'`
 
-7. Install docker in your system `https://docs.docker.com/desktop/`
+8. Install docker in your system `https://docs.docker.com/desktop/`
 
-8. Run redis using docker `docker run -d  -p 6379:6379 redis` 
+9. Run redis using docker `docker run -d  -p 6379:6379 redis` 
 
-9. Start the celery worker `celery -A shopapi worker --loglevel=info`
+10. Start the celery worker `celery -A shopapi worker --loglevel=info`
 
-10. Install stripe cli tool on your system `https://stripe.com/docs/stripe-cli#install`
+11. Install stripe cli tool on your system `https://stripe.com/docs/stripe-cli#install`
 
-11. Configure the webhook `stripe listen --forward-to localhost:8000/store/webhooks/stripe/`
+12. Configure the webhook `stripe listen --forward-to localhost:8000/store/webhooks/stripe/`
 
-12. Create the migration `python manage.py migrate` 
+13. Create the migration `python manage.py migrate` 
 
-13. Create the superuser `python manage.py createsuperuser`
+14. Create the superuser `python manage.py createsuperuser`
 
-14. Run the development server `python manage.py runserver`
+15. Run the development server `python manage.py runserver`
 
-15. Head over to `http://localhost:8000/admin` on your browser
+16. Head over to `http://localhost:8000/admin` on your browser
    
-16. Run the test using command `pytest` or `pwt` for continuous testing *[Optional]*
+17. Run the test using command `pytest` or `pwt` for continuous testing *[Optional]*
 
-17. Generate test coverage in html using `pytest --cov --cov-report=html` *[Optional]*
+18. Generate test coverage in html using `pytest --cov --cov-report=html` *[Optional]*
 
-18. Run celery flower to manage celery workers `celery flower` *[Optional]*
+19. Run celery flower to manage celery workers `celery flower` *[Optional]*
 
-19. Run the performance test using `locust -f locustfiles/browse_product.py` *[Optional]*
+20. Run the performance test using `locust -f locustfiles/browse_product.py` *[Optional]*
     
-20. Read the API documentation on `http://127.0.0.1:8000/api/schema/swagger-ui/` *[Optional]*
+21. Read the API documentation on `http://127.0.0.1:8000/api/schema/swagger-ui/` *[Optional]*
 
 
 #### Docker Set up

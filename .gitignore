@@ -5,3 +5,4 @@ __pycache__/
 *.log
 local_settings.py
 .pytest_cache
+./static

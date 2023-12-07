@@ -300,3 +300,19 @@ $ docker-compose exec web python manage.py createsuperuser
 - https://stripe.com/docs/stripe-cli
 - https://docs.docker.com/engine/install/
 - https://drf-spectacular.readthedocs.io/en/latest/
+
+
+
+
+```
+# Stop all containers
+sudo docker stop $(sudo docker ps -a -q)
+
+# Remove all containers
+sudo docker rm $(sudo docker ps -a -q)
+
+# Remove all images
+sudo docker rmi -f $(sudo docker images -q)
+
+
+```

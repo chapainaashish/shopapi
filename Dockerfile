@@ -7,12 +7,10 @@ WORKDIR /code
 
 COPY ./requirements.txt .
 
-RUN apt-get update -y && \
-    apt-get install -y netcat && \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN apt-get update -y && apt-get install -y netcat && pip install -r requirements.txt && pip install --upgrade 'sentry-sdk[django]'
 
-RUN  pip install -r requirements.txt
+COPY ./entrypoint.sh .
+RUN chmod +x /code/entrypoint.sh
 
 COPY . .
 
